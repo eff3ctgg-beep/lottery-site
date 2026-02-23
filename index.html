@@ -21,12 +21,10 @@
       box-shadow:0 0 40px rgba(0,255,200,0.1);
       text-align:center;
       width:320px;
+      position:relative;
     }
 
-    h1{
-      margin-bottom:30px;
-      color:#00ffc8;
-    }
+    h1{ color:#00ffc8; }
 
     button{
       background:#1f2937;
@@ -35,7 +33,6 @@
       padding:12px 20px;
       margin:8px;
       border-radius:10px;
-      font-size:16px;
       cursor:pointer;
       transition:0.3s;
     }
@@ -50,46 +47,93 @@
       margin-top:20px;
       font-size:24px;
       color:#00ffc8;
-      animation:pop 0.3s ease;
     }
 
-    @keyframes pop{
-      0%{transform:scale(0.7);opacity:0;}
-      100%{transform:scale(1);opacity:1;}
+    /* 결과 네온 박스 */
+    #resultBox{
+      display:none;
+      position:fixed;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      background:#020617;
+      padding:30px;
+      border-radius:20px;
+      box-shadow:0 0 20px #00ffc8, 0 0 60px #00ffc8;
+      width:300px;
+      max-height:400px;
+      overflow:auto;
+      text-align:left;
+      animation:glow 1.5s infinite alternate;
     }
+
+    @keyframes glow{
+      from{ box-shadow:0 0 10px #00ffc8; }
+      to{ box-shadow:0 0 30px #00ffc8; }
+    }
+
+    #resultList{
+      margin-top:10px;
+      font-size:18px;
+    }
+
   </style>
 </head>
 
 <body>
 
 <div class="card">
-  <h1>🎁뽑기 시스템🎁</h1>
+  <h1>🎁추첨 시스템🎁</h1>
 
-  <button onclick="setup()">세팅</button>
-  <button onclick="draw()">뽑기 시작</button>
+  <button onclick="setup()">설정</button>
+  <button onclick="draw()">뽑기 시작!</button>
   <button onclick="resetGame()">리셋</button>
 
   <h2 id="result"></h2>
+</div>
+
+<!-- 결과 박스 -->
+<div id="resultBox">
+  <h2>추첨 결과</h2>
+  <div id="resultList"></div>
+  <br>
+  <button onclick="closeResult()">확인</button>
 </div>
 
 <script>
 let min, max, target, rigTurn, maxDraw;
 let count = 0;
 let history = [];
+let allowDuplicate = true;
+let usedNumbers = [];
 
 function setup(){
+
   min = parseInt(prompt("최소값 입력"));
   max = parseInt(prompt("최대값 입력"));
+
+  let dup = prompt("중복 허용? (y / n)").toLowerCase();
+  allowDuplicate = dup === "y";
+
   target = parseInt(prompt("원하는 당첨 번호 입력"));
-  rigTurn = parseInt(prompt("몇 번째에 원하는 당첨 번호가 뜨게 할까요?"));
-  maxDraw = parseInt(prompt("총 몇 번 뽑을까요?"));
+  rigTurn = parseInt(prompt("몇 번째에 당첨?"));
+
+  if(allowDuplicate){
+    maxDraw = parseInt(prompt("총 몇 번 뽑을까?"));
+  } else {
+    maxDraw = max - min + 1;
+    alert("중복 없음 → 자동 " + maxDraw + "번 진행");
+  }
 
   count = 0;
   history = [];
+  usedNumbers = [];
+
   document.getElementById("result").innerText = "설정 완료!";
 }
 
 function draw(){
+
   if(count >= maxDraw){
     showResult();
     return;
@@ -103,10 +147,12 @@ function draw(){
   } else {
     do {
       result = Math.floor(Math.random()*(max-min+1))+min;
-    } while(result == target);
+    } while(!allowDuplicate && usedNumbers.includes(result));
   }
 
+  usedNumbers.push(result);
   history.push(count + "번째 → " + result);
+
   document.getElementById("result").innerText = count + "번째 결과 : " + result;
 
   if(count >= maxDraw){
@@ -115,13 +161,18 @@ function draw(){
 }
 
 function showResult(){
-  let text = "📊 추첨 결과\n\n";
+  let list = document.getElementById("resultList");
+  list.innerHTML = "";
 
   history.forEach(item=>{
-    text += item + "\n";
+    list.innerHTML += "<div>" + item + "</div>";
   });
 
-  alert(text);
+  document.getElementById("resultBox").style.display = "block";
+}
+
+function closeResult(){
+  document.getElementById("resultBox").style.display = "none";
   resetGame();
 }
 
@@ -133,6 +184,7 @@ function resetGame(){
   maxDraw = null;
   count = 0;
   history = [];
+  usedNumbers = [];
 
   document.getElementById("result").innerText = "초기화 완료!";
 }
