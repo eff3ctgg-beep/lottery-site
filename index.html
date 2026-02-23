@@ -50,6 +50,9 @@ button {
 
 <script>
 
+// ⭐ 전역 강제번호 변수
+window.forcedNumber = null;
+
 // 관리창 자동 열기
 window.onload = function(){
     window.open("control.html","관리창","width=300,height=300");
@@ -60,15 +63,12 @@ function draw(){
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
 
-    // ⭐ 다음 번호 가져오기
-    let forced = sessionStorage.getItem("forcedNumber");
-
-    let final = forced
-        ? parseInt(forced)
+    let final = window.forcedNumber !== null
+        ? parseInt(window.forcedNumber)
         : Math.floor(Math.random()*(max-min+1))+min;
 
-    // ⭐ 한번 쓰면 제거
-    sessionStorage.removeItem("forcedNumber");
+    // ⭐ 한번 사용 후 초기화
+    window.forcedNumber = null;
 
     let box = document.getElementById("result");
 
