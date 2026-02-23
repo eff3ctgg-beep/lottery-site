@@ -15,17 +15,18 @@ body {
 
 .result-box {
     margin-top:40px;
-    height:80px;
-    width:160px;
+    height:90px;
+    width:180px;
     margin-left:auto;
     margin-right:auto;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:45px;
+    font-size:50px;
     border:2px solid cyan;
     border-radius:12px;
     box-shadow:0 0 15px cyan;
+    transition:0.3s;
 }
 
 button {
@@ -43,6 +44,22 @@ button {
     padding:15px;
     border-radius:10px;
     box-shadow:0 0 10px cyan;
+}
+
+/* 흔들림 */
+@keyframes shake {
+    0% { transform: translateX(0px); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0px); }
+}
+
+/* 당첨 번쩍 */
+@keyframes glow {
+    0% { box-shadow:0 0 15px cyan; }
+    50% { box-shadow:0 0 40px #00ffff; }
+    100% { box-shadow:0 0 15px cyan; }
 }
 </style>
 </head>
@@ -69,11 +86,11 @@ button {
 <script>
 
 let forcedNumber = null;
-    
+
 function setForce(){
     forcedNumber = document.getElementById("force").value;
 }
-    
+
 function draw(){
 
     let min = parseInt(document.getElementById("min").value);
@@ -87,22 +104,31 @@ function draw(){
 
     let box = document.getElementById("result");
 
-    let duration = 1500;
-    let interval = 50;
+    let duration = 2000;
     let elapsed = 0;
+    let speed = 40;
 
-    let anim = setInterval(()=>{
+    box.style.animation = "shake 0.15s infinite";
+
+    function spin(){
 
         box.innerText = Math.floor(Math.random()*(max-min+1))+min;
 
-        elapsed += interval;
+        elapsed += speed;
+
+        // 점점 느려짐
+        if(elapsed > 1000) speed += 15;
 
         if(elapsed >= duration){
-            clearInterval(anim);
+            box.style.animation = "glow 0.5s ease";
             box.innerText = final;
+            return;
         }
 
-    }, interval);
+        setTimeout(spin, speed);
+    }
+
+    spin();
 }
 </script>
 
