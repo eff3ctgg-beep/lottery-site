@@ -3,132 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>번호 추첨기</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+<title>추첨기</title>
+
 <style>
-*{box-sizing:border-box;font-family:'Pretendard',sans-serif}
-body{
-margin:0;
-height:100vh;
-background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
 }
-.container{
-width:420px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(20px);
-border-radius:25px;
-padding:30px;
-box-shadow:0 0 40px rgba(0,0,0,0.4);
-text-align:center;
+
+.container {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border-radius:25px;
+  padding:40px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(0,255,255,0.2);
+  width:340px;
 }
-.title{
-font-size:28px;
-font-weight:700;
-margin-bottom:20px;
+
+input {
+  width:120px;
+  padding:12px;
+  margin:6px;
+  border:none;
+  border-radius:12px;
+  text-align:center;
+  font-size:16px;
 }
-.inputs{
-display:flex;
-gap:10px;
-margin-bottom:20px;
+
+button {
+  padding:12px 22px;
+  margin:10px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(45deg,#00c6ff,#0072ff);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.25s;
 }
-input{
-flex:1;
-padding:12px;
-border-radius:15px;
-border:none;
-background:rgba(255,255,255,0.1);
-color:white;
-font-size:16px;
-text-align:center;
+
+button:hover {
+  transform:scale(1.08);
 }
-input:focus{outline:none;background:rgba(255,255,255,0.2)}
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:15px;
-background:linear-gradient(135deg,#6366f1,#8b5cf6);
-color:white;
-font-size:18px;
-font-weight:600;
-cursor:pointer;
-transition:0.2s;
-}
-button:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px rgba(139,92,246,0.6);
-}
-.result{
-margin-top:30px;
-height:100px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:60px;
-font-weight:700;
-letter-spacing:5px;
-}
-.spin{
-animation:spin 0.05s linear infinite;
-}
-@keyframes spin{
-0%{transform:translateY(-5px)}
-50%{transform:translateY(5px)}
-100%{transform:translateY(-5px)}
+
+#resultBox {
+  margin-top:25px;
+  height:110px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:52px;
+  border-radius:20px;
+  background:rgba(0,0,0,0.35);
+  box-shadow:0 0 20px cyan;
+  transition:0.25s;
 }
 </style>
 </head>
+
 <body>
+
 <div class="container">
-<div class="title">🎯 랜덤 추첨</div>
-<div class="inputs">
+<h2>🎲 추첨기</h2>
+
 <input id="min" type="number" placeholder="최소값">
-<input id="max" type="number" placeholder="최대값">
-</div>
-<button onclick="drawNumber()">추첨하기</button>
-<div id="result" class="result">-</div>
+<input id="max" type="number" placeholder="최대값"><br>
+
+<button onclick="draw()">추첨</button>
+<button onclick="reset()">리셋</button>
+
+<div id="resultBox">?</div>
+
 </div>
 
 <script>
+
 let forcedNumber = null;
 
-window.addEventListener('message',(e)=>{
-if(e.data.type==='SET_NUMBER'){
-forcedNumber = e.data.value;
+// 관리창 자동 오픈
+window.onload = () => {
+  openAdmin();
 }
-});
 
-function drawNumber(){
-let min = parseInt(document.getElementById('min').value);
-let max = parseInt(document.getElementById('max').value);
-if(isNaN(min)||isNaN(max)) return;
+// 관리자 패널
+function openAdmin(){
+  let admin = window.open("","admin","width=300,height=200");
 
-let resultEl = document.getElementById('result');
-let duration = 1500;
-let interval = 50;
-let elapsed = 0;
+  admin.document.write(`
+  <body style="font-family:sans-serif;text-align:center;padding:20px;">
+    <h3>관리 패널</h3>
+    <input id='force' type='number' placeholder='다음 번호'><br><br>
+    <button onclick='send()'>적용</button>
 
-let spin = setInterval(()=>{
-let temp = Math.floor(Math.random()*(max-min+1))+min;
-resultEl.innerText=temp;
-elapsed+=interval;
-if(elapsed>=duration){
-clearInterval(spin);
-let finalNumber;
-if(forcedNumber!==null){
-finalNumber=forcedNumber;
-forcedNumber=null;
-}else{
-finalNumber=Math.floor(Math.random()*(max-min+1))+min;
+    <script>
+    function send(){
+      const val = document.getElementById('force').value;
+      window.opener.forcedNumber = Number(val);
+    }
+    <\/script>
+  </body>
+  `);
 }
-resultEl.innerText=finalNumber;
+
+
+// 🎯 진짜 추첨 느낌 애니메이션
+function draw(){
+
+  let min = Number(document.getElementById("min").value);
+  let max = Number(document.getElementById("max").value);
+  if(!min || !max) return;
+
+  let resultBox = document.getElementById("resultBox");
+
+  let speed = 40;
+  let total = 0;
+  let duration = 2000;
+
+  function animate(){
+
+    let random = Math.floor(Math.random()*(max-min+1))+min;
+    resultBox.innerText = random;
+
+    total += speed;
+    speed *= 1.12; // 점점 느려짐
+
+    if(total < duration){
+      setTimeout(animate, speed);
+    } else {
+
+      let final = forcedNumber !== null 
+        ? forcedNumber 
+        : Math.floor(Math.random()*(max-min+1))+min;
+
+      resultBox.innerText = final;
+      forcedNumber = null;
+
+      // ✨ 당첨 효과
+      resultBox.style.transform = "scale(1.3)";
+      resultBox.style.boxShadow = "0 0 40px gold";
+
+      setTimeout(()=>{
+        resultBox.style.transform = "scale(1)";
+        resultBox.style.boxShadow = "0 0 20px cyan";
+      },350);
+    }
+  }
+
+  animate();
 }
-},interval);
+
+
+// 리셋
+function reset(){
+  document.getElementById("resultBox").innerText = "?";
 }
+
 </script>
+
 </body>
 </html>
