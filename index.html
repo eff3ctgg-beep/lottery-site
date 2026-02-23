@@ -1,194 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>추첨 시스템</title>
-  <style>
-    body{
-      margin:0;
-      height:100vh;
-      background:#0f172a;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-family:sans-serif;
-      color:white;
-    }
+<title>LOTTERY</title>
 
-    .card{
-      background:#111827;
-      padding:40px;
-      border-radius:20px;
-      box-shadow:0 0 40px rgba(0,255,200,0.1);
-      text-align:center;
-      width:320px;
-    }
+<style>
+body{
+margin:0;
+height:100vh;
+background:#0f172a;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:sans-serif;
+color:white;
+}
 
-    h1{ color:#00ffc8; }
+.card{
+background:#111827;
+padding:30px;
+border-radius:20px;
+box-shadow:0 0 40px rgba(0,255,200,0.1);
+text-align:center;
+width:350px;
+}
 
-    button{
-      background:#1f2937;
-      border:none;
-      color:white;
-      padding:12px 20px;
-      margin:8px;
-      border-radius:10px;
-      cursor:pointer;
-      transition:0.3s;
-    }
+input{
+width:80%;
+padding:8px;
+margin:5px;
+border-radius:8px;
+border:none;
+text-align:center;
+}
 
-    button:hover{
-      background:#00ffc8;
-      color:black;
-      transform:scale(1.05);
-    }
+button{
+background:#1f2937;
+border:none;
+color:white;
+padding:10px 20px;
+margin:5px;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+}
 
-    #result{
-      margin-top:20px;
-      font-size:24px;
-      color:#00ffc8;
-    }
+button:hover{
+background:#00ffc8;
+color:black;
+transform:scale(1.05);
+}
 
-    #resultBox{
-      display:none;
-      position:fixed;
-      top:50%;
-      left:50%;
-      transform:translate(-50%, -50%);
-      background:#020617;
-      padding:30px;
-      border-radius:20px;
-      box-shadow:0 0 20px #00ffc8, 0 0 60px #00ffc8;
-      width:300px;
-      max-height:400px;
-      overflow:auto;
-      text-align:left;
-      animation:glow 1.5s infinite alternate;
-    }
+#rollingBox{
+margin-top:20px;
+font-size:40px;
+height:60px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+background:#020617;
+box-shadow:0 0 10px #00ffc8;
+}
 
-    @keyframes glow{
-      from{ box-shadow:0 0 10px #00ffc8; }
-      to{ box-shadow:0 0 30px #00ffc8; }
-    }
-  </style>
+#controlPanel{
+position:fixed;
+right:20px;
+top:20px;
+background:#020617;
+padding:15px;
+border-radius:15px;
+box-shadow:0 0 20px #00ffc8;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="card">
-  <h1>🎁추첨 시스템🎁</h1>
 
-  <div id="controlButtons">
-    <button onclick="setup()">설정</button>
-    <button onclick="draw()">뽑기 시작!</button>
-  </div>
+<h2>🎁 LOTTERY</h2>
 
-  <button id="resetBtn" onclick="resetGame()" style="display:none;">리셋</button>
+<input id="min" placeholder="최소값"><br>
+<input id="max" placeholder="최대값"><br>
+<input id="drawCount" placeholder="총 뽑기 횟수"><br>
 
-  <h2 id="result"></h2>
+<label>
+<input type="checkbox" id="dup"> 중복 허용
+</label>
+
+<br>
+<button onclick="start()">시작</button>
+<button onclick="draw()">뽑기</button>
+
+<div id="rollingBox">-</div>
+
 </div>
 
-<div id="resultBox">
-  <h2>📊 추첨 결과</h2>
-  <div id="resultList"></div>
-  <br>
-  <button onclick="closeResult()">확인</button>
+<!-- 조작 패널 -->
+<div id="controlPanel">
+<h4>🎯 다음 번호 지정</h4>
+<input id="forceNum" placeholder="번호 입력">
+<br>
+<button onclick="setForce()">다음 번호 지정</button>
 </div>
 
 <script>
-let min, max, target, rigTurn, maxDraw;
-let count = 0;
-let history = [];
-let allowDuplicate = true;
-let usedNumbers = [];
 
-function setup(){
+let min,max,dup,count=0,maxDraw;
+let used=[];
+let forced=null;
 
-  min = parseInt(prompt("최소값 입력"));
-  max = parseInt(prompt("최대값 입력"));
+function start(){
+min=parseInt(minInput.value);
+max=parseInt(maxInput.value);
+dup=document.getElementById("dup").checked;
+maxDraw=parseInt(drawCount.value);
+count=0;
+used=[];
+rollingBox.innerText="READY";
+}
 
-  let dup = prompt("중복 허용? (y / n)").toLowerCase();
-  allowDuplicate = dup === "y";
-
-  target = parseInt(prompt("원하는 당첨 번호 입력"));
-  rigTurn = parseInt(prompt("원하는 번호가 몇 번째에 당첨되게 할까요?"));
-
-  if(allowDuplicate){
-    maxDraw = parseInt(prompt("총 몇 번 뽑을까요?"));
-  } else {
-    maxDraw = max - min + 1;
-    alert("중복 없음 → 자동 " + maxDraw + "번 진행");
-  }
-
-  count = 0;
-  history = [];
-  usedNumbers = [];
-
-  document.getElementById("result").innerText = "설정 완료!";
+function setForce(){
+forced=parseInt(forceNum.value);
+alert("다음 번호 설정됨!");
 }
 
 function draw(){
 
-  if(count >= maxDraw){
-    showResult();
-    return;
-  }
+if(count>=maxDraw) return;
 
-  count++;
-  let result;
+count++;
 
-  if(count == rigTurn){
-    result = target;
-  } else {
-    do {
-      result = Math.floor(Math.random()*(max-min+1))+min;
-    } while(!allowDuplicate && usedNumbers.includes(result));
-  }
+let box=document.getElementById("rollingBox");
 
-  usedNumbers.push(result);
-  history.push(count + "번째 → " + result);
+let roll=setInterval(()=>{
+box.innerText=Math.floor(Math.random()*(max-min+1))+min;
+},50);
 
-  document.getElementById("result").innerText = count + "번째 결과 : " + result;
+setTimeout(()=>{
+clearInterval(roll);
 
-  if(count >= maxDraw){
-    setTimeout(showResult, 500);
-  }
+let result;
+
+if(forced!==null){
+result=forced;
+forced=null;
+}else{
+do{
+result=Math.floor(Math.random()*(max-min+1))+min;
+}while(!dup && used.includes(result));
 }
 
-function showResult(){
-  let list = document.getElementById("resultList");
-  list.innerHTML = "";
+used.push(result);
+box.innerText=result;
 
-  history.forEach(item=>{
-    list.innerHTML += "<div>" + item + "</div>";
-  });
+},1500);
 
-  document.getElementById("resultBox").style.display = "block";
 }
 
-function closeResult(){
-  document.getElementById("resultBox").style.display = "none";
-
-  // 설정 / 뽑기 버튼 숨김
-  document.getElementById("controlButtons").style.display = "none";
-
-  // 리셋 버튼만 표시
-  document.getElementById("resetBtn").style.display = "inline-block";
-}
-
-function resetGame(){
-  min = null;
-  max = null;
-  target = null;
-  rigTurn = null;
-  maxDraw = null;
-  count = 0;
-  history = [];
-  usedNumbers = [];
-
-  document.getElementById("result").innerText = "초기화 완료!";
-  document.getElementById("controlButtons").style.display = "block";
-  document.getElementById("resetBtn").style.display = "none";
-}
 </script>
 
 </body>
