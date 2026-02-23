@@ -69,7 +69,11 @@ button {
 <script>
 
 let forcedNumber = null;
-
+    
+function setForce(){
+    forcedNumber = document.getElementById("force").value;
+}
+    
 function draw(){
 
     let min = parseInt(document.getElementById("min").value);
