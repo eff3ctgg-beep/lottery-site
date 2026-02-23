@@ -1,142 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>LOTTERY</title>
+<meta charset="UTF-8">
+<title>추첨 시스템</title>
 
 <style>
-body{
-margin:0;
-height:100vh;
-background:#0f172a;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:sans-serif;
-color:white;
+body {
+    background: #020617;
+    color: white;
+    font-family: sans-serif;
+    text-align:center;
+    margin-top:100px;
 }
 
-.card{
-background:#111827;
-padding:30px;
-border-radius:20px;
-box-shadow:0 0 40px rgba(0,255,200,0.1);
-text-align:center;
-width:350px;
+.slot {
+    font-size:100px;
+    width:220px;
+    height:220px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    border:3px solid cyan;
+    box-shadow:0 0 20px cyan, inset 0 0 20px cyan;
+    overflow:hidden;
+    position:relative;
 }
 
-input{
-width:80%;
-padding:8px;
-margin:5px;
-border-radius:8px;
-border:none;
-text-align:center;
+.numbers {
+    position:absolute;
+    transition: transform 1s cubic-bezier(.25,.8,.25,1);
 }
 
-button{
-background:#1f2937;
-border:none;
-color:white;
-padding:10px 20px;
-margin:5px;
-border-radius:10px;
-cursor:pointer;
-transition:0.3s;
+.num {
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-button:hover{
-background:#00ffc8;
-color:black;
-transform:scale(1.05);
-}
-
-#rollingBox{
-margin-top:20px;
-font-size:40px;
-height:60px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:10px;
-background:#020617;
-box-shadow:0 0 10px #00ffc8;
+button {
+    margin-top:40px;
+    padding:15px 40px;
+    font-size:20px;
+    background:cyan;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<h1>🎰 추첨</h1>
 
-<h2>🎁 LOTTERY</h2>
-
-<input id="min" placeholder="최소값"><br>
-<input id="max" placeholder="최대값"><br>
-<input id="drawCount" placeholder="총 뽑기 횟수"><br>
-
-<label>
-<input type="checkbox" id="dup"> 중복 허용
-</label>
+<div class="slot">
+    <div class="numbers" id="numbers"></div>
+</div>
 
 <br>
-<button onclick="start()">시작</button>
-<button onclick="draw()">뽑기</button>
-<button onclick="openControl()">관리 창 열기</button>
-
-<div id="rollingBox">READY</div>
-
-</div>
+<button onclick="draw()">추첨</button>
 
 <script>
 
-let min,max,dup,count=0,maxDraw;
-let used=[];
-let forced=null;
+let min = 1;
+let max = 50;
+let forcedNumber = null;
 
-function start(){
-min=parseInt(document.getElementById("min").value);
-max=parseInt(document.getElementById("max").value);
-dup=document.getElementById("dup").checked;
-maxDraw=parseInt(document.getElementById("drawCount").value);
-count=0;
-used=[];
-rollingBox.innerText="START";
+// 관리창 자동 실행
+window.onload = function() {
+    window.open("control.html","관리창","width=400,height=600");
 }
 
-function openControl(){
-window.open("control.html","control","width=300,height=250");
-}
+window.addEventListener("message", (event) => {
+    if(event.data.type === "set"){
+        min = event.data.min;
+        max = event.data.max;
+        forcedNumber = event.data.force;
+    }
+});
 
 function draw(){
 
-if(count>=maxDraw) return;
+    let container = document.getElementById("numbers");
 
-count++;
+    let final = forcedNumber !== null
+        ? forcedNumber
+        : Math.floor(Math.random()*(max-min+1))+min;
 
-let box=document.getElementById("rollingBox");
+    forcedNumber = null;
 
-let roll=setInterval(()=>{
-box.innerText=Math.floor(Math.random()*(max-min+1))+min;
-},50);
+    // 슬롯 리스트 만들기
+    container.innerHTML = "";
 
-setTimeout(()=>{
-clearInterval(roll);
+    let total = 20; // 슬롯 길이
 
-let result;
+    for(let i=0;i<total;i++){
+        let div = document.createElement("div");
+        div.className="num";
+        div.innerText = Math.floor(Math.random()*(max-min+1))+min;
+        container.appendChild(div);
+    }
 
-if(forced!==null){
-result=forced;
-forced=null;
-}else{
-do{
-result=Math.floor(Math.random()*(max-min+1))+min;
-}while(!dup && used.includes(result));
-}
+    let finalDiv = document.createElement("div");
+    finalDiv.className="num";
+    finalDiv.innerText = final;
+    container.appendChild(finalDiv);
 
-used.push(result);
-box.innerText=result;
+    container.style.transform="translateY(0px)";
 
-},1500);
+    setTimeout(()=>{
+        container.style.transform =
+            "translateY(-"+(220*total)+"px)";
+    },50);
 
 }
 
