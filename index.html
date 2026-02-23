@@ -21,7 +21,6 @@
       box-shadow:0 0 40px rgba(0,255,200,0.1);
       text-align:center;
       width:320px;
-      position:relative;
     }
 
     h1{ color:#00ffc8; }
@@ -49,7 +48,6 @@
       color:#00ffc8;
     }
 
-    /* 결과 네온 박스 */
     #resultBox{
       display:none;
       position:fixed;
@@ -71,12 +69,6 @@
       from{ box-shadow:0 0 10px #00ffc8; }
       to{ box-shadow:0 0 30px #00ffc8; }
     }
-
-    #resultList{
-      margin-top:10px;
-      font-size:18px;
-    }
-
   </style>
 </head>
 
@@ -85,16 +77,18 @@
 <div class="card">
   <h1>🎁추첨 시스템🎁</h1>
 
-  <button onclick="setup()">설정</button>
-  <button onclick="draw()">뽑기 시작!</button>
-  <button onclick="resetGame()">리셋</button>
+  <div id="controlButtons">
+    <button onclick="setup()">설정</button>
+    <button onclick="draw()">뽑기 시작!</button>
+  </div>
+
+  <button id="resetBtn" onclick="resetGame()" style="display:none;">리셋</button>
 
   <h2 id="result"></h2>
 </div>
 
-<!-- 결과 박스 -->
 <div id="resultBox">
-  <h2>추첨 결과</h2>
+  <h2>📊 추첨 결과</h2>
   <div id="resultList"></div>
   <br>
   <button onclick="closeResult()">확인</button>
@@ -116,10 +110,10 @@ function setup(){
   allowDuplicate = dup === "y";
 
   target = parseInt(prompt("원하는 당첨 번호 입력"));
-  rigTurn = parseInt(prompt("몇 번째에 당첨?"));
+  rigTurn = parseInt(prompt("원하는 번호가 몇 번째에 당첨되게 할까요?"));
 
   if(allowDuplicate){
-    maxDraw = parseInt(prompt("총 몇 번 뽑을까?"));
+    maxDraw = parseInt(prompt("총 몇 번 뽑을까요?"));
   } else {
     maxDraw = max - min + 1;
     alert("중복 없음 → 자동 " + maxDraw + "번 진행");
@@ -173,7 +167,12 @@ function showResult(){
 
 function closeResult(){
   document.getElementById("resultBox").style.display = "none";
-  resetGame();
+
+  // 설정 / 뽑기 버튼 숨김
+  document.getElementById("controlButtons").style.display = "none";
+
+  // 리셋 버튼만 표시
+  document.getElementById("resetBtn").style.display = "inline-block";
 }
 
 function resetGame(){
@@ -187,6 +186,8 @@ function resetGame(){
   usedNumbers = [];
 
   document.getElementById("result").innerText = "초기화 완료!";
+  document.getElementById("controlButtons").style.display = "block";
+  document.getElementById("resetBtn").style.display = "none";
 }
 </script>
 
