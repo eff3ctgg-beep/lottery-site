@@ -6,7 +6,9 @@
 <body style="text-align:center; font-family:sans-serif; margin-top:50px;">
 
 <h1>🎁 추첨 시스템</h1>
+
 <button onclick="setup()">설정 시작</button>
+<button onclick="resetGame()">리셋</button>
 
 <div id="game" style="display:none;">
   <br>
@@ -29,9 +31,11 @@ function setup(){
   target = parseInt(prompt("원하는 당첨 번호 입력"));
   alert("확인 : " + target);
 
-  rigTurn = parseInt(prompt("몇 번째에 당첨?"));
+  rigTurn = parseInt(prompt("몇 번째에 당첨되게 할까요??"));
   alert("확인 : " + rigTurn);
 
+  count = 0;
+  document.getElementById("result").innerText = "";
   document.getElementById("game").style.display = "block";
 }
 
@@ -48,6 +52,19 @@ function draw(){
   }
 
   document.getElementById("result").innerText = count + "번째 결과 : " + result;
+}
+
+function resetGame(){
+  min = null;
+  max = null;
+  target = null;
+  rigTurn = null;
+  count = 0;
+
+  document.getElementById("result").innerText = "";
+  document.getElementById("game").style.display = "none";
+
+  alert("초기화 완료!");
 }
 </script>
 
