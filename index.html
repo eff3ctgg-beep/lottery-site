@@ -50,30 +50,24 @@ button {
 
 <script>
 
-let forcedNumber = null;
-
 // 관리창 자동 열기
 window.onload = function(){
     window.open("control.html","관리창","width=300,height=300");
 }
-
-// 번호 받기
-window.addEventListener("message",(e)=>{
-    if(e.data.type==="force"){
-        forcedNumber = e.data.number;
-    }
-});
 
 function draw(){
 
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
 
-    let final = forcedNumber !== null
-        ? forcedNumber
+    // ⭐ localStorage에서 번호 가져오기
+    let forced = localStorage.getItem("forcedNumber");
+
+    let final = forced
+        ? parseInt(forced)
         : Math.floor(Math.random()*(max-min+1))+min;
 
-    forcedNumber = null;
+    localStorage.removeItem("forcedNumber");
 
     let box = document.getElementById("result");
 
@@ -89,7 +83,7 @@ function draw(){
 
         if(elapsed >= duration){
             clearInterval(anim);
-            box.innerText = final; // ⭐ 마지막 당첨번호 확정
+            box.innerText = final;
         }
 
     }, interval);
