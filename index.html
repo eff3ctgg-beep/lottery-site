@@ -61,17 +61,6 @@ border-radius:10px;
 background:#020617;
 box-shadow:0 0 10px #00ffc8;
 }
-
-#controlPanel{
-position:fixed;
-right:20px;
-top:20px;
-background:#020617;
-padding:15px;
-border-radius:15px;
-box-shadow:0 0 20px #00ffc8;
-}
-
 </style>
 </head>
 
@@ -92,17 +81,10 @@ box-shadow:0 0 20px #00ffc8;
 <br>
 <button onclick="start()">시작</button>
 <button onclick="draw()">뽑기</button>
+<button onclick="openControl()">관리 창 열기</button>
 
-<div id="rollingBox">-</div>
+<div id="rollingBox">READY</div>
 
-</div>
-
-<!-- 조작 패널 -->
-<div id="controlPanel">
-<h4>🎯 다음 번호 지정</h4>
-<input id="forceNum" placeholder="번호 입력">
-<br>
-<button onclick="setForce()">다음 번호 지정</button>
 </div>
 
 <script>
@@ -112,18 +94,17 @@ let used=[];
 let forced=null;
 
 function start(){
-min=parseInt(minInput.value);
-max=parseInt(maxInput.value);
+min=parseInt(document.getElementById("min").value);
+max=parseInt(document.getElementById("max").value);
 dup=document.getElementById("dup").checked;
-maxDraw=parseInt(drawCount.value);
+maxDraw=parseInt(document.getElementById("drawCount").value);
 count=0;
 used=[];
-rollingBox.innerText="READY";
+rollingBox.innerText="START";
 }
 
-function setForce(){
-forced=parseInt(forceNum.value);
-alert("다음 번호 설정됨!");
+function openControl(){
+window.open("control.html","control","width=300,height=250");
 }
 
 function draw(){
