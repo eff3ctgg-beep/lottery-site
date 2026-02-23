@@ -33,6 +33,17 @@ button {
     margin:10px;
     cursor:pointer;
 }
+
+.panel {
+    position:fixed;
+    right:20px;
+    top:20px;
+    background:#0f172a;
+    border:1px solid cyan;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 0 10px cyan;
+}
 </style>
 </head>
 
@@ -48,14 +59,20 @@ button {
 
 <div class="result-box" id="result">?</div>
 
+<!-- 관리 패널 -->
+<div class="panel">
+    <h4>관리</h4>
+    <input id="force" type="number" placeholder="다음 번호"><br><br>
+    <button onclick="setForce()">적용</button>
+</div>
+
 <script>
 
-// ⭐ 전역 강제번호 변수
-window.forcedNumber = null;
+let forcedNumber = null;
 
-// 관리창 자동 열기
-window.onload = function(){
-    window.open("control.html","관리창","width=300,height=300");
+function setForce(){
+    forcedNumber = document.getElementById("force").value;
+    alert("다음 번호 설정됨");
 }
 
 function draw(){
@@ -63,12 +80,11 @@ function draw(){
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
 
-    let final = window.forcedNumber !== null
-        ? parseInt(window.forcedNumber)
+    let final = forcedNumber
+        ? parseInt(forcedNumber)
         : Math.floor(Math.random()*(max-min+1))+min;
 
-    // ⭐ 한번 사용 후 초기화
-    window.forcedNumber = null;
+    forcedNumber = null;
 
     let box = document.getElementById("result");
 
