@@ -1,63 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>관리창</title>
+<title>관리 패널</title>
 
 <style>
 body{
-    background:#020617;
-    color:white;
-    font-family:sans-serif;
-    text-align:center;
-    margin-top:30px;
+background:#020617;
+color:white;
+text-align:center;
+font-family:sans-serif;
+padding-top:40px;
 }
 
 input{
-    padding:10px;
-    margin:10px;
-    width:150px;
+padding:8px;
+border-radius:8px;
+border:none;
+text-align:center;
 }
 
 button{
-    padding:10px 20px;
-    background:cyan;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#00ffc8;
+cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h2>관리 설정</h2>
+<h3>🎯 다음 번호 지정</h3>
 
-최소값<br>
-<input id="min" type="number" value="1"><br>
-
-최대값<br>
-<input id="max" type="number" value="50"><br>
-
-다음에 뜰 번호<br>
-<input id="force" type="number" placeholder="없으면 랜덤"><br><br>
-
-<button onclick="send()">적용</button>
+<input id="forceNum" placeholder="번호 입력">
+<br>
+<button onclick="sendNumber()">적용</button>
 
 <script>
-function send(){
 
-    const data = {
-        type:"set",
-        min: parseInt(document.getElementById("min").value),
-        max: parseInt(document.getElementById("max").value),
-        force: document.getElementById("force").value
-            ? parseInt(document.getElementById("force").value)
-            : null
-    };
-
-    window.opener.postMessage(data,"*");
+function sendNumber(){
+let num = document.getElementById("forceNum").value;
+window.opener.forced = parseInt(num);
+alert("다음 번호 설정됨!");
 }
+
 </script>
 
 </body>
