@@ -13,16 +13,11 @@ function send(){
 
     const number = document.getElementById("force").value;
 
-    if(!number){
-        alert("번호를 입력하세요");
-        return;
+    if(number){
+        window.opener.sessionStorage.setItem("forcedNumber", number);
     }
 
-    // 메인페이지 URL에 번호 전달
-    window.opener.location.href =
-        window.opener.location.pathname + "?force=" + number;
-
-    alert("다음 번호 설정 완료");
+    alert("다음 번호 설정됨");
 }
 </script>
 
