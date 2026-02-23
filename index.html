@@ -63,9 +63,9 @@
 <body>
 
 <div class="card">
-  <h1>🎁뽑기 프로그램🎁</h1>
+  <h1>🎁 LOTTERY</h1>
 
-  <button onclick="setup()">뽑기 시작</button>
+  <button onclick="setup()">설정 시작</button>
   <button onclick="draw()">뽑기</button>
   <button onclick="resetGame()">리셋</button>
 
@@ -73,20 +73,28 @@
 </div>
 
 <script>
-let min, max, target, rigTurn;
+let min, max, target, rigTurn, maxDraw;
 let count = 0;
+let history = [];
 
 function setup(){
   min = parseInt(prompt("최소값 입력"));
   max = parseInt(prompt("최대값 입력"));
   target = parseInt(prompt("원하는 당첨 번호 입력"));
-  rigTurn = parseInt(prompt("몇 번째에 당첨 되게 할까요?"));
+  rigTurn = parseInt(prompt("몇 번째에 당첨?"));
+  maxDraw = parseInt(prompt("총 몇 번 뽑을까?"));
 
   count = 0;
+  history = [];
   document.getElementById("result").innerText = "설정 완료!";
 }
 
 function draw(){
+  if(count >= maxDraw){
+    showResult();
+    return;
+  }
+
   count++;
   let result;
 
@@ -98,7 +106,23 @@ function draw(){
     } while(result == target);
   }
 
+  history.push(count + "번째 → " + result);
   document.getElementById("result").innerText = count + "번째 결과 : " + result;
+
+  if(count >= maxDraw){
+    setTimeout(showResult, 500);
+  }
+}
+
+function showResult(){
+  let text = "📊 추첨 결과\n\n";
+
+  history.forEach(item=>{
+    text += item + "\n";
+  });
+
+  alert(text);
+  resetGame();
 }
 
 function resetGame(){
@@ -106,7 +130,9 @@ function resetGame(){
   max = null;
   target = null;
   rigTurn = null;
+  maxDraw = null;
   count = 0;
+  history = [];
 
   document.getElementById("result").innerText = "초기화 완료!";
 }
