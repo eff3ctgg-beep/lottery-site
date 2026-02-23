@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>관리 패널</title>
+
+<style>
+body{
+background:#020617;
+color:white;
+text-align:center;
+font-family:sans-serif;
+padding-top:40px;
+}
+
+input{
+padding:8px;
+border-radius:8px;
+border:none;
+text-align:center;
+}
+
+button{
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#00ffc8;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h3>🎯 다음 번호 지정</h3>
+
+<input id="forceNum" placeholder="번호 입력">
+<br>
+<button onclick="sendNumber()">적용</button>
+
+<script>
+
+function sendNumber(){
+let num = document.getElementById("forceNum").value;
+window.opener.forced = parseInt(num);
+alert("다음 번호 설정됨!");
+}
+
+</script>
+
+</body>
+</html>
