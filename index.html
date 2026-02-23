@@ -63,10 +63,10 @@
 <body>
 
 <div class="card">
-  <h1>🎁 LOTTERY</h1>
+  <h1>🎁뽑기 시스템🎁</h1>
 
-  <button onclick="setup()">설정 시작</button>
-  <button onclick="draw()">뽑기</button>
+  <button onclick="setup()">세팅</button>
+  <button onclick="draw()">뽑기 시작</button>
   <button onclick="resetGame()">리셋</button>
 
   <h2 id="result"></h2>
@@ -81,8 +81,8 @@ function setup(){
   min = parseInt(prompt("최소값 입력"));
   max = parseInt(prompt("최대값 입력"));
   target = parseInt(prompt("원하는 당첨 번호 입력"));
-  rigTurn = parseInt(prompt("몇 번째에 당첨?"));
-  maxDraw = parseInt(prompt("총 몇 번 뽑을까?"));
+  rigTurn = parseInt(prompt("몇 번째에 원하는 당첨 번호가 뜨게 할까요?"));
+  maxDraw = parseInt(prompt("총 몇 번 뽑을까요?"));
 
   count = 0;
   history = [];
