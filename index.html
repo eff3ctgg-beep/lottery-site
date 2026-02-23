@@ -1,136 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>추첨</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>번호 추첨기</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-    background:#020617;
-    color:white;
-    font-family:sans-serif;
-    text-align:center;
-    margin-top:60px;
+*{box-sizing:border-box;font-family:'Pretendard',sans-serif}
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
 }
-
-.result-box {
-    margin-top:40px;
-    height:90px;
-    width:180px;
-    margin-left:auto;
-    margin-right:auto;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:50px;
-    border:2px solid cyan;
-    border-radius:12px;
-    box-shadow:0 0 15px cyan;
-    transition:0.3s;
+.container{
+width:420px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 0 40px rgba(0,0,0,0.4);
+text-align:center;
 }
-
-button {
-    padding:8px 20px;
-    margin:10px;
-    cursor:pointer;
+.title{
+font-size:28px;
+font-weight:700;
+margin-bottom:20px;
 }
-
-.panel {
-    position:fixed;
-    right:20px;
-    top:20px;
-    background:#0f172a;
-    border:1px solid cyan;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 0 10px cyan;
+.inputs{
+display:flex;
+gap:10px;
+margin-bottom:20px;
 }
-
-/* 흔들림 */
-@keyframes shake {
-    0% { transform: translateX(0px); }
-    25% { transform: translateX(-3px); }
-    50% { transform: translateX(3px); }
-    75% { transform: translateX(-2px); }
-    100% { transform: translateX(0px); }
+input{
+flex:1;
+padding:12px;
+border-radius:15px;
+border:none;
+background:rgba(255,255,255,0.1);
+color:white;
+font-size:16px;
+text-align:center;
 }
-
-/* 당첨 번쩍 */
-@keyframes glow {
-    0% { box-shadow:0 0 15px cyan; }
-    50% { box-shadow:0 0 40px #00ffff; }
-    100% { box-shadow:0 0 15px cyan; }
+input:focus{outline:none;background:rgba(255,255,255,0.2)}
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:15px;
+background:linear-gradient(135deg,#6366f1,#8b5cf6);
+color:white;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+transition:0.2s;
+}
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(139,92,246,0.6);
+}
+.result{
+margin-top:30px;
+height:100px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:60px;
+font-weight:700;
+letter-spacing:5px;
+}
+.spin{
+animation:spin 0.05s linear infinite;
+}
+@keyframes spin{
+0%{transform:translateY(-5px)}
+50%{transform:translateY(5px)}
+100%{transform:translateY(-5px)}
 }
 </style>
 </head>
-
 <body>
-
-<h2>🎯 추첨</h2>
-
-최소값 <input id="min" type="number" value="1">
-최대값 <input id="max" type="number" value="50">
-
-<br>
-<button onclick="draw()">추첨</button>
-
-<div class="result-box" id="result">?</div>
-
-<!-- 관리 패널 -->
-<div class="panel">
-    <h4>관리</h4>
-    <input id="force" type="number" placeholder="다음 번호"><br><br>
-    <button onclick="setForce()">적용</button>
+<div class="container">
+<div class="title">🎯 랜덤 추첨</div>
+<div class="inputs">
+<input id="min" type="number" placeholder="최소값">
+<input id="max" type="number" placeholder="최대값">
+</div>
+<button onclick="drawNumber()">추첨하기</button>
+<div id="result" class="result">-</div>
 </div>
 
 <script>
-
 let forcedNumber = null;
 
-function setForce(){
-    forcedNumber = document.getElementById("force").value;
+window.addEventListener('message',(e)=>{
+if(e.data.type==='SET_NUMBER'){
+forcedNumber = e.data.value;
 }
+});
 
-function draw(){
+function drawNumber(){
+let min = parseInt(document.getElementById('min').value);
+let max = parseInt(document.getElementById('max').value);
+if(isNaN(min)||isNaN(max)) return;
 
-    let min = parseInt(document.getElementById("min").value);
-    let max = parseInt(document.getElementById("max").value);
+let resultEl = document.getElementById('result');
+let duration = 1500;
+let interval = 50;
+let elapsed = 0;
 
-    let final = forcedNumber
-        ? parseInt(forcedNumber)
-        : Math.floor(Math.random()*(max-min+1))+min;
-
-    forcedNumber = null;
-
-    let box = document.getElementById("result");
-
-    let duration = 2000;
-    let elapsed = 0;
-    let speed = 40;
-
-    box.style.animation = "shake 0.15s infinite";
-
-    function spin(){
-
-        box.innerText = Math.floor(Math.random()*(max-min+1))+min;
-
-        elapsed += speed;
-
-        // 점점 느려짐
-        if(elapsed > 1000) speed += 15;
-
-        if(elapsed >= duration){
-            box.style.animation = "glow 0.5s ease";
-            box.innerText = final;
-            return;
-        }
-
-        setTimeout(spin, speed);
-    }
-
-    spin();
+let spin = setInterval(()=>{
+let temp = Math.floor(Math.random()*(max-min+1))+min;
+resultEl.innerText=temp;
+elapsed+=interval;
+if(elapsed>=duration){
+clearInterval(spin);
+let finalNumber;
+if(forcedNumber!==null){
+finalNumber=forcedNumber;
+forcedNumber=null;
+}else{
+finalNumber=Math.floor(Math.random()*(max-min+1))+min;
+}
+resultEl.innerText=finalNumber;
+}
+},interval);
 }
 </script>
-
 </body>
 </html>
