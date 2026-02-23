@@ -26,7 +26,6 @@ button {
     cursor:pointer;
 }
 
-/* 결과 영역 (반으로 축소) */
 .result-box {
     margin-top:40px;
     height:70px;
@@ -44,7 +43,7 @@ button {
     position:relative;
 }
 
-/* 슬롯 애니메이션 */
+/* 슬롯 */
 .slot-track {
     position:absolute;
 }
@@ -55,6 +54,13 @@ button {
     display:flex;
     align-items:center;
     justify-content:center;
+}
+
+/* 최종 고정 숫자 */
+.final-number {
+    position:absolute;
+    font-size:40px;
+    display:none;
 }
 </style>
 </head>
@@ -71,6 +77,7 @@ button {
 
 <div class="result-box">
     <div class="slot-track" id="track"></div>
+    <div class="final-number" id="final"></div>
 </div>
 
 <script>
@@ -100,6 +107,9 @@ function draw(){
     forcedNumber = null;
 
     let track = document.getElementById("track");
+    let finalBox = document.getElementById("final");
+
+    finalBox.style.display="none";
     track.innerHTML="";
 
     let rollCount = 15;
@@ -117,7 +127,6 @@ function draw(){
     finalDiv.innerText=final;
     track.appendChild(finalDiv);
 
-    // 초기 위치
     track.style.transition="none";
     track.style.transform="translateY(0px)";
 
@@ -126,6 +135,11 @@ function draw(){
         track.style.transform="translateY(-"+(height*rollCount)+"px)";
     },50);
 
+    // ⭐ 애니메이션 끝나면 최종번호 고정 표시
+    setTimeout(()=>{
+        finalBox.innerText = final;
+        finalBox.style.display="block";
+    },1100);
 }
 </script>
 
