@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>추첨 시스템</title>
+</head>
+<body style="text-align:center; font-family:sans-serif; margin-top:50px;">
+
+<h1>🎁 추첨 시스템</h1>
+
+<div id="setup">
+  <h3>설정</h3>
+  최소 번호 : <input id="min" type="number" value="1"><br><br>
+  최대 번호 : <input id="max" type="number" value="50"><br><br>
+  원하는 당첨 번호 : <input id="target" type="number" value="7"><br><br>
+  몇 번째에 당첨? : <input id="rigTurn" type="number" value="3"><br><br>
+
+  <button onclick="start()">설정 완료</button>
+</div>
+
+<div id="game" style="display:none;">
+  <button onclick="draw()" style="font-size:20px; padding:10px 20px;">뽑기</button>
+  <h2 id="result"></h2>
+</div>
+
+<script>
+let min, max, target, rigTurn;
+let count = 0;
+
+function start(){
+  min = parseInt(document.getElementById("min").value);
+  max = parseInt(document.getElementById("max").value);
+  target = parseInt(document.getElementById("target").value);
+  rigTurn = parseInt(document.getElementById("rigTurn").value);
+
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("game").style.display = "block";
+}
+
+function draw(){
+  count++;
+
+  let result;
+
+  if(count == rigTurn){
+    result = target;
+  } else {
+    do {
+      result = Math.floor(Math.random()*(max-min+1))+min;
+    } while(result == target);
+  }
+
+  document.getElementById("result").innerText = count + "번째 결과 : " + result;
+}
+</script>
+
+</body>
+</html>
