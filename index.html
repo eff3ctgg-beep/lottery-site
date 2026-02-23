@@ -6,85 +6,89 @@
 
 <style>
 body {
-    background: #020617;
-    color: white;
-    font-family: sans-serif;
+    background:#020617;
+    color:white;
+    font-family:sans-serif;
     text-align:center;
-    margin-top:100px;
+    margin-top:60px;
 }
 
-.slot {
-    font-size:100px;
-    width:220px;
-    height:220px;
-    margin:auto;
+input {
+    padding:8px;
+    margin:5px;
+    width:100px;
+}
+
+button {
+    padding:10px 25px;
+    margin:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* 결과 영역 */
+.result-box {
+    margin-top:40px;
+    height:120px;
     display:flex;
-    align-items:center;
     justify-content:center;
-    border-radius:20px;
-    border:3px solid cyan;
-    box-shadow:0 0 20px cyan, inset 0 0 20px cyan;
+    align-items:center;
+    font-size:70px;
+    border:2px solid cyan;
+    border-radius:15px;
+    box-shadow:0 0 15px cyan;
     overflow:hidden;
     position:relative;
 }
 
-.numbers {
+/* 슬롯 애니메이션 */
+.slot-track {
     position:absolute;
     transition: transform 1s cubic-bezier(.25,.8,.25,1);
 }
 
-.num {
-    height:220px;
+.slot-num {
+    height:120px;
     display:flex;
     align-items:center;
     justify-content:center;
-}
-
-button {
-    margin-top:40px;
-    padding:15px 40px;
-    font-size:20px;
-    background:cyan;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎰 추첨</h1>
+<h2>🎯 추첨 설정</h2>
 
-<div class="slot">
-    <div class="numbers" id="numbers"></div>
-</div>
+최소값 <input id="min" type="number" value="1">
+최대값 <input id="max" type="number" value="50">
 
 <br>
 <button onclick="draw()">추첨</button>
 
+<div class="result-box">
+    <div class="slot-track" id="track"></div>
+</div>
+
 <script>
 
-let min = 1;
-let max = 50;
 let forcedNumber = null;
 
-// 관리창 자동 실행
-window.onload = function() {
+// 관리창 자동 오픈
+window.onload = function(){
     window.open("control.html","관리창","width=400,height=600");
 }
 
-window.addEventListener("message", (event) => {
-    if(event.data.type === "set"){
-        min = event.data.min;
-        max = event.data.max;
-        forcedNumber = event.data.force;
+window.addEventListener("message",(e)=>{
+    if(e.data.type==="force"){
+        forcedNumber = e.data.number;
     }
 });
 
 function draw(){
 
-    let container = document.getElementById("numbers");
+    let min = parseInt(document.getElementById("min").value);
+    let max = parseInt(document.getElementById("max").value);
 
     let final = forcedNumber !== null
         ? forcedNumber
@@ -92,30 +96,28 @@ function draw(){
 
     forcedNumber = null;
 
-    // 슬롯 리스트 만들기
-    container.innerHTML = "";
+    let track = document.getElementById("track");
+    track.innerHTML="";
 
-    let total = 20; // 슬롯 길이
+    let rollCount = 15;
 
-    for(let i=0;i<total;i++){
-        let div = document.createElement("div");
-        div.className="num";
+    for(let i=0;i<rollCount;i++){
+        let div=document.createElement("div");
+        div.className="slot-num";
         div.innerText = Math.floor(Math.random()*(max-min+1))+min;
-        container.appendChild(div);
+        track.appendChild(div);
     }
 
-    let finalDiv = document.createElement("div");
-    finalDiv.className="num";
-    finalDiv.innerText = final;
-    container.appendChild(finalDiv);
+    let finalDiv=document.createElement("div");
+    finalDiv.className="slot-num";
+    finalDiv.innerText=final;
+    track.appendChild(finalDiv);
 
-    container.style.transform="translateY(0px)";
+    track.style.transform="translateY(0px)";
 
     setTimeout(()=>{
-        container.style.transform =
-            "translateY(-"+(220*total)+"px)";
+        track.style.transform="translateY(-"+(120*rollCount)+"px)";
     },50);
-
 }
 
 </script>
