@@ -121,7 +121,7 @@ let adminOpen = false;
 
 // 관리자 토글 단축키
 document.addEventListener("keydown", e => {
-  if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a"){
+  if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "z"){
     adminOpen = !adminOpen;
     document.getElementById("adminPanel").classList.toggle("show");
   }
