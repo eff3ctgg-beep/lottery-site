@@ -15,31 +15,23 @@ body {
 
 .result-box {
     margin-top:40px;
-    height:70px;
+    height:80px;
     width:160px;
     margin-left:auto;
     margin-right:auto;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:40px;
+    font-size:45px;
     border:2px solid cyan;
     border-radius:12px;
     box-shadow:0 0 15px cyan;
-    overflow:hidden;
-    position:relative;
 }
 
-.slot-track {
-    position:absolute;
-}
-
-.slot-num {
-    height:70px;
-    width:160px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+button {
+    padding:8px 20px;
+    margin:10px;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -54,9 +46,7 @@ body {
 <br>
 <button onclick="draw()">추첨</button>
 
-<div class="result-box">
-    <div class="slot-track" id="track"></div>
-</div>
+<div class="result-box" id="result">?</div>
 
 <script>
 
@@ -67,7 +57,7 @@ window.onload = function(){
     window.open("control.html","관리창","width=300,height=300");
 }
 
-// 번호 수신
+// 번호 받기
 window.addEventListener("message",(e)=>{
     if(e.data.type==="force"){
         forcedNumber = e.data.number;
@@ -85,38 +75,24 @@ function draw(){
 
     forcedNumber = null;
 
-    let track = document.getElementById("track");
-    track.innerHTML="";
+    let box = document.getElementById("result");
 
-    let height = 70;
-    let rollCount = 25;
+    let duration = 1500;
+    let interval = 50;
+    let elapsed = 0;
 
-    // 슬롯 채우기
-    for(let i=0;i<rollCount;i++){
-        let div=document.createElement("div");
-        div.className="slot-num";
-        div.innerText = Math.floor(Math.random()*(max-min+1))+min;
-        track.appendChild(div);
-    }
+    let anim = setInterval(()=>{
 
-    let finalDiv=document.createElement("div");
-    finalDiv.className="slot-num";
-    finalDiv.innerText=final;
-    track.appendChild(finalDiv);
+        box.innerText = Math.floor(Math.random()*(max-min+1))+min;
 
-    track.style.transition="none";
-    track.style.transform="translateY(0px)";
+        elapsed += interval;
 
-    setTimeout(()=>{
+        if(elapsed >= duration){
+            clearInterval(anim);
+            box.innerText = final; // ⭐ 마지막 당첨번호 확정
+        }
 
-        // ⭐ 자연스러운 감속 애니메이션
-        track.style.transition =
-        "transform 2s cubic-bezier(0.1, 0.8, 0.2, 1)";
-
-        track.style.transform =
-        "translateY(-"+(height*rollCount)+"px)";
-
-    },50);
+    }, interval);
 }
 </script>
 
