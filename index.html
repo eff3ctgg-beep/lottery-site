@@ -16,26 +16,29 @@ body {
 input {
     padding:8px;
     margin:5px;
-    width:100px;
+    width:80px;
 }
 
 button {
-    padding:10px 25px;
+    padding:8px 20px;
     margin:10px;
-    font-size:16px;
+    font-size:15px;
     cursor:pointer;
 }
 
-/* 결과 영역 */
+/* 결과 영역 (반으로 축소) */
 .result-box {
     margin-top:40px;
-    height:120px;
+    height:70px;
+    width:160px;
+    margin-left:auto;
+    margin-right:auto;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:70px;
+    font-size:40px;
     border:2px solid cyan;
-    border-radius:15px;
+    border-radius:12px;
     box-shadow:0 0 15px cyan;
     overflow:hidden;
     position:relative;
@@ -44,11 +47,11 @@ button {
 /* 슬롯 애니메이션 */
 .slot-track {
     position:absolute;
-    transition: transform 1s cubic-bezier(.25,.8,.25,1);
 }
 
 .slot-num {
-    height:120px;
+    height:70px;
+    width:160px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -100,6 +103,7 @@ function draw(){
     track.innerHTML="";
 
     let rollCount = 15;
+    let height = 70;
 
     for(let i=0;i<rollCount;i++){
         let div=document.createElement("div");
@@ -113,13 +117,16 @@ function draw(){
     finalDiv.innerText=final;
     track.appendChild(finalDiv);
 
+    // 초기 위치
+    track.style.transition="none";
     track.style.transform="translateY(0px)";
 
     setTimeout(()=>{
-        track.style.transform="translateY(-"+(120*rollCount)+"px)";
+        track.style.transition="transform 1s cubic-bezier(.25,.8,.25,1)";
+        track.style.transform="translateY(-"+(height*rollCount)+"px)";
     },50);
-}
 
+}
 </script>
 
 </body>
