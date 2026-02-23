@@ -60,14 +60,15 @@ function draw(){
     let min = parseInt(document.getElementById("min").value);
     let max = parseInt(document.getElementById("max").value);
 
-    // ⭐ localStorage에서 번호 가져오기
-    let forced = localStorage.getItem("forcedNumber");
+    // ⭐ 다음 번호 가져오기
+    let forced = sessionStorage.getItem("forcedNumber");
 
     let final = forced
         ? parseInt(forced)
         : Math.floor(Math.random()*(max-min+1))+min;
 
-    localStorage.removeItem("forcedNumber");
+    // ⭐ 한번 쓰면 제거
+    sessionStorage.removeItem("forcedNumber");
 
     let box = document.getElementById("result");
 
