@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>추첨 시스템</title>
+<title>추첨</title>
 
 <style>
 body {
@@ -11,19 +11,6 @@ body {
     font-family:sans-serif;
     text-align:center;
     margin-top:60px;
-}
-
-input {
-    padding:8px;
-    margin:5px;
-    width:80px;
-}
-
-button {
-    padding:8px 20px;
-    margin:10px;
-    font-size:15px;
-    cursor:pointer;
 }
 
 .result-box {
@@ -43,7 +30,6 @@ button {
     position:relative;
 }
 
-/* 슬롯 */
 .slot-track {
     position:absolute;
 }
@@ -55,19 +41,12 @@ button {
     align-items:center;
     justify-content:center;
 }
-
-/* 최종 고정 숫자 */
-.final-number {
-    position:absolute;
-    font-size:40px;
-    display:none;
-}
 </style>
 </head>
 
 <body>
 
-<h2>🎯 추첨 설정</h2>
+<h2>🎯 추첨</h2>
 
 최소값 <input id="min" type="number" value="1">
 최대값 <input id="max" type="number" value="50">
@@ -77,18 +56,18 @@ button {
 
 <div class="result-box">
     <div class="slot-track" id="track"></div>
-    <div class="final-number" id="final"></div>
 </div>
 
 <script>
 
 let forcedNumber = null;
 
-// 관리창 자동 오픈
+// 관리창 자동 열기
 window.onload = function(){
-    window.open("control.html","관리창","width=400,height=600");
+    window.open("control.html","관리창","width=300,height=300");
 }
 
+// 번호 수신
 window.addEventListener("message",(e)=>{
     if(e.data.type==="force"){
         forcedNumber = e.data.number;
@@ -107,14 +86,12 @@ function draw(){
     forcedNumber = null;
 
     let track = document.getElementById("track");
-    let finalBox = document.getElementById("final");
-
-    finalBox.style.display="none";
     track.innerHTML="";
 
-    let rollCount = 15;
     let height = 70;
+    let rollCount = 25;
 
+    // 슬롯 채우기
     for(let i=0;i<rollCount;i++){
         let div=document.createElement("div");
         div.className="slot-num";
@@ -131,15 +108,15 @@ function draw(){
     track.style.transform="translateY(0px)";
 
     setTimeout(()=>{
-        track.style.transition="transform 1s cubic-bezier(.25,.8,.25,1)";
-        track.style.transform="translateY(-"+(height*rollCount)+"px)";
-    },50);
 
-    // ⭐ 애니메이션 끝나면 최종번호 고정 표시
-    setTimeout(()=>{
-        finalBox.innerText = final;
-        finalBox.style.display="block";
-    },1100);
+        // ⭐ 자연스러운 감속 애니메이션
+        track.style.transition =
+        "transform 2s cubic-bezier(0.1, 0.8, 0.2, 1)";
+
+        track.style.transform =
+        "translateY(-"+(height*rollCount)+"px)";
+
+    },50);
 }
 </script>
 
