@@ -2,202 +2,123 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>추첨기</title>
+<title>관리자 패널</title>
 
 <style>
-body {
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-}
-
-.container{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  border-radius:25px;
-  padding:40px;
-  text-align:center;
-  box-shadow:0 0 40px rgba(0,255,255,0.2);
-  width:340px;
+body{
+background:#111;
+color:white;
+font-family:sans-serif;
+text-align:center;
+padding-top:80px;
 }
 
 input{
-  width:120px;
-  padding:12px;
-  margin:6px;
-  border:none;
-  border-radius:12px;
-  text-align:center;
-  font-size:16px;
+padding:10px;
+font-size:16px;
+border-radius:10px;
+border:none;
+width:160px;
 }
 
 button{
-  padding:12px 22px;
-  margin:10px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(45deg,#00c6ff,#0072ff);
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.25s;
+margin-top:15px;
+padding:10px 25px;
+border:none;
+border-radius:10px;
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
 }
 
-button:hover{
-  transform:scale(1.08);
+#preview{
+margin-top:40px;
+font-size:60px;
+height:80px;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:0.4s;
 }
 
-#resultBox{
-  margin-top:25px;
-  height:110px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:60px;
-  border-radius:20px;
-  background:rgba(0,0,0,0.35);
-  box-shadow:0 0 20px cyan;
-  overflow:hidden;
+.spin{
+animation:spin 0.1s linear infinite;
 }
 
-.roll{
-  animation:roll 0.08s linear infinite;
-}
-
-@keyframes roll{
-  0%{transform:translateY(-15px);}
-  50%{transform:translateY(15px);}
-  100%{transform:translateY(-15px);}
-}
-
-/* 관리자 */
-.admin{
-  position:fixed;
-  right:-260px;
-  top:50%;
-  transform:translateY(-50%);
-  width:220px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  border-radius:20px;
-  padding:25px;
-  text-align:center;
-  box-shadow:0 0 30px rgba(255,200,0,0.2);
-  transition:0.4s;
-}
-
-.admin.show{
-  right:40px;
-}
-
-.admin input{
-  width:150px;
+@keyframes spin{
+0%{transform:translateY(-10px);}
+50%{transform:translateY(10px);}
+100%{transform:translateY(-10px);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-<h2>🎲 추첨기</h2>
+<h2>🛠 관리자 패널</h2>
 
-<input id="min" type="number" placeholder="최소값">
-<input id="max" type="number" placeholder="최대값"><br>
+<input id="num" type="number" placeholder="당첨 번호"><br>
 
-<button onclick="draw()">추첨</button>
-<button onclick="reset()">리셋</button>
+<button onclick="save()">저장</button>
 
-<div id="resultBox">?</div>
-</div>
-
-<!-- 관리자 -->
-<div class="admin" id="adminPanel">
-<h3>🛠 관리자</h3>
-<input id="forceInput" type="number" placeholder="다음 번호"><br>
-<button onclick="setForce()">적용</button>
-</div>
+<div id="preview">?</div>
 
 <script>
 
-let adminOpen=false;
+function save(){
 
-// 관리자 토글
-document.addEventListener("keydown",e=>{
-if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==="z"){
-adminOpen=!adminOpen;
-document.getElementById("adminPanel").classList.toggle("show");
-}
-});
+let v=document.getElementById("num").value;
 
-function setForce(){
-let num=document.getElementById("forceInput").value;
-localStorage.setItem("forcedNumber",num);
+if(v===""){
+alert("숫자를 입력하세요");
+return;
 }
 
-function draw(){
+let preview=document.getElementById("preview");
 
-let min=Number(document.getElementById("min").value);
-let max=Number(document.getElementById("max").value);
+preview.classList.add("spin");
 
-if(!min||!max)return;
+let count=0;
+let speed=80;
 
-let resultBox=document.getElementById("resultBox");
+function roll(){
 
-let forced=localStorage.getItem("forcedNumber");
+preview.innerText=Math.floor(Math.random()*100);
 
-let duration=2000;
-let start=Date.now();
+count++;
 
-resultBox.classList.add("roll");
+if(count<25){
 
-function spin(){
-
-let random=Math.floor(Math.random()*(max-min+1))+min;
-resultBox.innerText=random;
-
-if(Date.now()-start<duration){
-
-requestAnimationFrame(spin);
+speed+=10;
+setTimeout(roll,speed);
 
 }else{
 
-resultBox.classList.remove("roll");
+preview.classList.remove("spin");
 
-let final;
+preview.innerText=v;
 
-if(forced!==null){
-final=Number(forced);
-localStorage.removeItem("forcedNumber");
-}else{
-final=Math.floor(Math.random()*(max-min+1))+min;
-}
-
-resultBox.innerText=final;
-
-resultBox.style.transform="scale(1.4)";
-resultBox.style.boxShadow="0 0 50px gold";
+preview.style.transform="translateY(-25px) scale(1.3)";
+preview.style.textShadow="0 0 20px gold";
 
 setTimeout(()=>{
-resultBox.style.transform="scale(1)";
-resultBox.style.boxShadow="0 0 20px cyan";
+preview.style.transform="translateY(0) scale(1)";
+preview.style.textShadow="0 0 10px orange";
 },400);
 
-}
+localStorage.setItem("forcedNumber",v);
+
+setTimeout(()=>{
+alert("다음 추첨 번호 저장 완료");
+},450);
 
 }
 
-spin();
-
 }
 
-function reset(){
-document.getElementById("resultBox").innerText="?";
+roll();
+
 }
 
 </script>
