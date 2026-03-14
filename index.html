@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>추첨기1</title>
+<title>추첨기</title>
 
 <style>
 body{
@@ -71,7 +71,6 @@ box-shadow:0 0 20px cyan;
 <input id="max" type="number" placeholder="최대값"><br>
 
 <button onclick="draw()">추첨</button>
-<button onclick="openAdmin()">관리자</button>
 
 <div id="resultBox">?</div>
 
@@ -105,11 +104,13 @@ document.getElementById("resultBox").innerText=result;
 
 }
 
-function openAdmin(){
+
+// 관리자 자동 탭
+setTimeout(()=>{
 
 window.open("./admin.html","admin","width=420,height=420");
 
-}
+},800);
 
 </script>
 
