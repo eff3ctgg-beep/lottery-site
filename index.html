@@ -8,8 +8,8 @@
 <style>
 body {
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   height:100vh;
   display:flex;
   justify-content:center;
@@ -17,10 +17,9 @@ body {
   color:white;
 }
 
-/* 추첨기 */
-.container {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
+.container{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
   border-radius:25px;
   padding:40px;
   text-align:center;
@@ -28,7 +27,7 @@ body {
   width:340px;
 }
 
-input {
+input{
   width:120px;
   padding:12px;
   margin:6px;
@@ -38,7 +37,7 @@ input {
   font-size:16px;
 }
 
-button {
+button{
   padding:12px 22px;
   margin:10px;
   border:none;
@@ -47,14 +46,13 @@ button {
   color:white;
   font-weight:bold;
   cursor:pointer;
-  transition:0.25s;
 }
 
-button:hover {
+button:hover{
   transform:scale(1.08);
 }
 
-#resultBox {
+#resultBox{
   margin-top:25px;
   height:110px;
   display:flex;
@@ -65,30 +63,6 @@ button:hover {
   background:rgba(0,0,0,0.35);
   box-shadow:0 0 20px cyan;
   transition:0.25s;
-}
-
-/* 숨겨진 관리자 */
-.admin {
-  position:fixed;
-  right:-260px;
-  top:50%;
-  transform:translateY(-50%);
-  width:220px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
-  border-radius:20px;
-  padding:25px;
-  text-align:center;
-  box-shadow:0 0 30px rgba(255,200,0,0.2);
-  transition:0.4s;
-}
-
-.admin.show {
-  right:40px;
-}
-
-.admin input{
-  width:150px;
 }
 </style>
 </head>
@@ -107,31 +81,9 @@ button:hover {
 <div id="resultBox">?</div>
 </div>
 
-<!-- 숨겨진 관리자 -->
-<div class="admin" id="adminPanel">
-<h3>🛠 관리자</h3>
-<input id="forceInput" type="number" placeholder="다음 번호"><br>
-<button onclick="setForce()">적용</button>
-</div>
-
 <script>
 
-let forcedNumber = null;
-let adminOpen = false;
-
-// 관리자 토글 단축키
-document.addEventListener("keydown", e => {
-  if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "z"){
-    adminOpen = !adminOpen;
-    document.getElementById("adminPanel").classList.toggle("show");
-  }
-});
-
-function setForce(){
-  forcedNumber = Number(document.getElementById("forceInput").value);
-}
-
-// 추첨 애니메이션
+// 추첨
 function draw(){
 
   let min = Number(document.getElementById("min").value);
@@ -154,22 +106,27 @@ function draw(){
 
     if(total < duration){
       setTimeout(animate, speed);
-    } else {
+    }
+    else{
 
-      let final = forcedNumber !== null 
-        ? forcedNumber 
+      let forced = localStorage.getItem("forcedNumber");
+
+      let final = forced !== null
+        ? Number(forced)
         : Math.floor(Math.random()*(max-min+1))+min;
 
       resultBox.innerText = final;
-      forcedNumber = null;
 
-      resultBox.style.transform = "scale(1.3)";
-      resultBox.style.boxShadow = "0 0 40px gold";
+      localStorage.removeItem("forcedNumber");
+
+      resultBox.style.transform="scale(1.3)";
+      resultBox.style.boxShadow="0 0 40px gold";
 
       setTimeout(()=>{
-        resultBox.style.transform = "scale(1)";
-        resultBox.style.boxShadow = "0 0 20px cyan";
+        resultBox.style.transform="scale(1)";
+        resultBox.style.boxShadow="0 0 20px cyan";
       },350);
+
     }
   }
 
@@ -177,65 +134,76 @@ function draw(){
 }
 
 function reset(){
-  document.getElementById("resultBox").innerText = "?";
+  document.getElementById("resultBox").innerText="?";
 }
 
 
-// 관리자 탭 자동 오픈
-window.addEventListener("load", () => {
+// 관리자 패널 자동 오픈
+window.addEventListener("load",()=>{
 
-  const adminTab = window.open("", "_blank");
+const admin=window.open("","adminPanel");
 
-  adminTab.document.write(`
-  <html>
-  <head>
-  <title>관리자 패널</title>
-  <style>
-  body{
-    font-family:sans-serif;
-    text-align:center;
-    padding-top:40px;
-    background:#111;
-    color:white;
-  }
+admin.document.write(`
+<html>
+<head>
+<title>관리자 패널</title>
 
-  input{
-    padding:10px;
-    font-size:16px;
-    width:120px;
-    border-radius:10px;
-    border:none;
-  }
+<style>
+body{
+background:#111;
+color:white;
+font-family:sans-serif;
+text-align:center;
+padding-top:40px;
+}
 
-  button{
-    padding:10px 20px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-    background:#ff9800;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-  }
-  </style>
-  </head>
+input{
+padding:10px;
+font-size:16px;
+border-radius:10px;
+border:none;
+width:120px;
+}
 
-  <body>
+button{
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
 
-  <h3>🛠 관리자 패널</h3>
-  <input id="num" type="number" placeholder="다음 번호"><br>
-  <button onclick="apply()">적용</button>
+</head>
 
-  <script>
-  function apply(){
-    const value = Number(document.getElementById("num").value);
-    window.opener.forcedNumber = value;
-  }
-  <\/script>
+<body>
 
-  </body>
-  </html>
-  `);
+<h3>🛠 관리자 패널</h3>
+
+<input id="num" type="number" placeholder="다음 번호"><br>
+
+<button onclick="save()">저장</button>
+
+<script>
+
+function save(){
+
+let v=document.getElementById("num").value;
+
+localStorage.setItem("forcedNumber",v);
+
+alert("다음 추첨 번호 저장 완료");
+
+}
+
+<\/script>
+
+</body>
+</html>
+`);
 
 });
 
