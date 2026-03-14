@@ -47,6 +47,10 @@ font-weight:bold;
 cursor:pointer;
 }
 
+button:hover{
+transform:scale(1.08);
+}
+
 #resultBox{
 margin-top:25px;
 height:110px;
@@ -71,6 +75,7 @@ box-shadow:0 0 20px cyan;
 <input id="max" type="number" placeholder="최대값"><br>
 
 <button onclick="draw()">추첨</button>
+<button onclick="openAdmin()">관리자</button>
 
 <div id="resultBox">?</div>
 
@@ -83,7 +88,6 @@ function draw(){
 let min=Number(document.getElementById("min").value);
 let max=Number(document.getElementById("max").value);
 
-  
 if(!min||!max) return;
 
 let forced=localStorage.getItem("forcedNumber");
@@ -102,6 +106,12 @@ result=Math.floor(Math.random()*(max-min+1))+min;
 }
 
 document.getElementById("resultBox").innerText=result;
+
+}
+
+function openAdmin(){
+
+window.open("admin.html","admin","width=400,height=400");
 
 }
 
