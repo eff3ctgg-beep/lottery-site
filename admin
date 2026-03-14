@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>관리자 패널</title>
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:sans-serif;
+text-align:center;
+padding-top:80px;
+}
+
+input{
+padding:10px;
+font-size:16px;
+border-radius:10px;
+border:none;
+width:160px;
+}
+
+button{
+margin-top:15px;
+padding:10px 25px;
+border:none;
+border-radius:10px;
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🛠 관리자 패널</h2>
+
+<input id="num" type="number" placeholder="당첨 번호"><br>
+
+<button onclick="save()">저장</button>
+
+<script>
+
+function save(){
+
+let v=document.getElementById("num").value;
+
+if(v===""){
+alert("숫자를 입력하세요");
+return;
+}
+
+localStorage.setItem("forcedNumber",v);
+
+alert("다음 추첨 번호 저장 완료");
+
+}
+
+</script>
+
+</body>
+</html>
