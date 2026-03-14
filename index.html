@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>추첨기1</title>
+<title>추첨기</title>
 
 <style>
 body{
@@ -105,16 +105,23 @@ let resultBox=document.getElementById("resultBox");
 
 resultBox.classList.add("shake");
 
-let slot=setInterval(()=>{
+let speed=40;
+let count=0;
+
+function spin(){
 
 let random=Math.floor(Math.random()*(max-min+1))+min;
 resultBox.innerText=random;
 
-},45);
+count++;
+speed*=1.08;
 
-setTimeout(()=>{
+if(count<35){
 
-clearInterval(slot);
+setTimeout(spin,speed);
+
+}else{
+
 resultBox.classList.remove("shake");
 
 let final;
@@ -128,16 +135,19 @@ final=Math.floor(Math.random()*(max-min+1))+min;
 
 resultBox.innerText=final;
 
-/* 당첨 효과 */
-resultBox.style.transform="translateY(-30px) scale(1.35)";
-resultBox.style.boxShadow="0 0 60px gold";
+resultBox.style.transform="translateY(-35px) scale(1.4)";
+resultBox.style.boxShadow="0 0 70px gold";
 
 setTimeout(()=>{
 resultBox.style.transform="translateY(0) scale(1)";
 resultBox.style.boxShadow="0 0 20px cyan";
-},350);
+},400);
 
-},2000);
+}
+
+}
+
+spin();
 
 }
 
