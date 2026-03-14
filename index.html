@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>추첨기</title>
+<title>추첨기1</title>
 
 <style>
 body{
@@ -59,6 +59,20 @@ background:rgba(0,0,0,0.35);
 box-shadow:0 0 20px cyan;
 transition:0.35s;
 }
+
+/* 슬롯 흔들림 */
+.shake{
+animation:shake 0.15s infinite;
+}
+
+@keyframes shake{
+0%{transform:translateX(-3px);}
+25%{transform:translateX(3px);}
+50%{transform:translateX(-3px);}
+75%{transform:translateX(3px);}
+100%{transform:translateX(0);}
+}
+
 </style>
 </head>
 
@@ -89,16 +103,19 @@ if(!min||!max) return;
 let forced=localStorage.getItem("forcedNumber");
 let resultBox=document.getElementById("resultBox");
 
+resultBox.classList.add("shake");
+
 let slot=setInterval(()=>{
 
 let random=Math.floor(Math.random()*(max-min+1))+min;
 resultBox.innerText=random;
 
-},50); // 슬롯 속도
+},45);
 
 setTimeout(()=>{
 
 clearInterval(slot);
+resultBox.classList.remove("shake");
 
 let final;
 
@@ -111,16 +128,16 @@ final=Math.floor(Math.random()*(max-min+1))+min;
 
 resultBox.innerText=final;
 
-// 튀었다가 내려오는 효과
+/* 당첨 효과 */
 resultBox.style.transform="translateY(-30px) scale(1.35)";
-resultBox.style.boxShadow="0 0 50px gold";
+resultBox.style.boxShadow="0 0 60px gold";
 
 setTimeout(()=>{
 resultBox.style.transform="translateY(0) scale(1)";
 resultBox.style.boxShadow="0 0 20px cyan";
 },350);
 
-},2000); // 슬롯 돌리는 시간
+},2000);
 
 }
 
