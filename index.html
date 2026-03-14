@@ -2,124 +2,145 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>관리자 패널</title>
+<title>추첨기</title>
 
 <style>
 body{
-background:#111;
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 color:white;
-font-family:sans-serif;
+}
+
+.container{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:40px;
 text-align:center;
-padding-top:80px;
+box-shadow:0 0 40px rgba(0,255,255,0.2);
+width:340px;
 }
 
 input{
-padding:10px;
-font-size:16px;
-border-radius:10px;
+width:120px;
+padding:12px;
+margin:6px;
 border:none;
-width:160px;
+border-radius:12px;
+text-align:center;
+font-size:16px;
 }
 
 button{
-margin-top:15px;
-padding:10px 25px;
+padding:12px 22px;
+margin:10px;
 border:none;
-border-radius:10px;
-background:#ff9800;
+border-radius:14px;
+background:linear-gradient(45deg,#00c6ff,#0072ff);
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
 
-#preview{
-margin-top:40px;
-font-size:60px;
-height:80px;
+#resultBox{
+margin-top:25px;
+height:110px;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
+font-size:60px;
+border-radius:20px;
+background:rgba(0,0,0,0.35);
+box-shadow:0 0 20px cyan;
 transition:0.4s;
-}
-
-.spin{
-animation:spin 0.1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:translateY(-10px);}
-50%{transform:translateY(10px);}
-100%{transform:translateY(-10px);}
 }
 </style>
 </head>
 
 <body>
 
-<h2>🛠 관리자 패널</h2>
+<div class="container">
 
-<input id="num" type="number" placeholder="당첨 번호"><br>
+<h2>🎲 추첨기</h2>
 
-<button onclick="save()">저장</button>
+<input id="min" type="number" placeholder="최소값">
+<input id="max" type="number" placeholder="최대값"><br>
 
-<div id="preview">?</div>
+<button onclick="draw()">추첨</button>
+
+<div id="resultBox">?</div>
+
+</div>
 
 <script>
 
-function save(){
+function draw(){
 
-let v=document.getElementById("num").value;
+let min=Number(document.getElementById("min").value);
+let max=Number(document.getElementById("max").value);
 
-if(v===""){
-alert("숫자를 입력하세요");
-return;
-}
+if(!min||!max) return;
 
-let preview=document.getElementById("preview");
+let forced=localStorage.getItem("forcedNumber");
 
-preview.classList.add("spin");
+let resultBox=document.getElementById("resultBox");
 
 let count=0;
-let speed=80;
+let speed=60;
 
-function roll(){
+function spin(){
 
-preview.innerText=Math.floor(Math.random()*100);
+let random=Math.floor(Math.random()*(max-min+1))+min;
+resultBox.innerText=random;
 
 count++;
 
-if(count<25){
+if(count<30){
 
-speed+=10;
-setTimeout(roll,speed);
+speed+=8;
+setTimeout(spin,speed);
 
 }else{
 
-preview.classList.remove("spin");
+let final;
 
-preview.innerText=v;
+if(forced!==null){
+final=Number(forced);
+localStorage.removeItem("forcedNumber");
+}else{
+final=Math.floor(Math.random()*(max-min+1))+min;
+}
 
-preview.style.transform="translateY(-25px) scale(1.3)";
-preview.style.textShadow="0 0 20px gold";
+resultBox.innerText=final;
+
+resultBox.style.transform="translateY(-30px) scale(1.4)";
+resultBox.style.boxShadow="0 0 50px gold";
 
 setTimeout(()=>{
-preview.style.transform="translateY(0) scale(1)";
-preview.style.textShadow="0 0 10px orange";
-},400);
-
-localStorage.setItem("forcedNumber",v);
-
-setTimeout(()=>{
-alert("다음 추첨 번호 저장 완료");
+resultBox.style.transform="translateY(0) scale(1)";
+resultBox.style.boxShadow="0 0 20px cyan";
 },450);
 
 }
 
 }
 
-roll();
+spin();
 
 }
+
+
+// 관리자 자동 탭
+setTimeout(()=>{
+
+window.open("./admin.html","admin","width=420,height=420");
+
+},800);
 
 </script>
 
