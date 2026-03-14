@@ -57,7 +57,7 @@ font-size:60px;
 border-radius:20px;
 background:rgba(0,0,0,0.35);
 box-shadow:0 0 20px cyan;
-transition:0.4s;
+transition:0.35s;
 }
 </style>
 </head>
@@ -87,25 +87,18 @@ let max=Number(document.getElementById("max").value);
 if(!min||!max) return;
 
 let forced=localStorage.getItem("forcedNumber");
-
 let resultBox=document.getElementById("resultBox");
 
-let count=0;
-let speed=60;
-
-function spin(){
+let slot=setInterval(()=>{
 
 let random=Math.floor(Math.random()*(max-min+1))+min;
 resultBox.innerText=random;
 
-count++;
+},50); // 슬롯 속도
 
-if(count<30){
+setTimeout(()=>{
 
-speed+=8;
-setTimeout(spin,speed);
-
-}else{
+clearInterval(slot);
 
 let final;
 
@@ -118,19 +111,16 @@ final=Math.floor(Math.random()*(max-min+1))+min;
 
 resultBox.innerText=final;
 
-resultBox.style.transform="translateY(-30px) scale(1.4)";
+// 튀었다가 내려오는 효과
+resultBox.style.transform="translateY(-30px) scale(1.35)";
 resultBox.style.boxShadow="0 0 50px gold";
 
 setTimeout(()=>{
 resultBox.style.transform="translateY(0) scale(1)";
 resultBox.style.boxShadow="0 0 20px cyan";
-},450);
+},350);
 
-}
-
-}
-
-spin();
+},2000); // 슬롯 돌리는 시간
 
 }
 
