@@ -1,165 +1,1005 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta charset="UTF-8">
-<title>추첨기1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>RANDOM.ORG - True Random Number Service</title>
+<meta name="viewport" content="width=device-width" />
+<meta name="application-name" content="RANDOM.ORG" />
+<meta name="Keywords" content="true random numbers" />
+<meta name="description" content="RANDOM.ORG offers true random numbers to anyone on the Internet. The randomness comes from atmospheric noise, which for many purposes is better than the pseudo-random number algorithms typically used in computer programs." />
+<meta name="author" content="Mads Haahr" />
+
+<link rel="apple-touch-icon" sizes="72x72" href="https://static.random.org/graphics/touch/app-touch-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76" href="https://static.random.org/graphics/touch/app-touch-76x76.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="https://static.random.org/graphics/touch/app-touch-114x114.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="https://static.random.org/graphics/touch/app-touch-120x120.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="https://static.random.org/graphics/touch/app-touch-144x144.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="https://static.random.org/graphics/touch/app-touch-152x152.png" />
+<link rel="apple-touch-icon" href="https://static.random.org/graphics/touch/app-touch-full.png" />
 
 <style>
 body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
+	font: 0.8em "Tahoma",sans-serif;
+	background: #FFF;
+	color: #000;
 }
 
-.container{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-border-radius:25px;
-padding:40px;
-text-align:center;
-box-shadow:0 0 40px rgba(0,255,255,0.2);
-width:340px;
+#invisible{
+	width: 800px;
+	margin: 2em auto;
 }
 
-input{
-width:120px;
-padding:12px;
-margin:6px;
-border:none;
-border-radius:12px;
-text-align:center;
-font-size:16px;
+#navigation{
+	margin: 0;
+	padding: 0 0 25px 15px;
+	background-color: #FFFFFF;
+	color: #3333FF;
+}
+#navigation li {
+    float: left;
+    display: block;
+    position: relative;
+    z-index: 9999;
+}
+#navigation li li {
+    clear: left;
+}
+#navigation li a {
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
+}
+#navigation ul {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    display: none;
+    padding: 2px;
+    border-left: 1px solid #999;
+    border-bottom: 1px solid #999;
+    border-right: 1px solid #999;
+    background: #fff;
+    box-shadow: 3px 3px 3px #ccc;
+}
+#navigation a:link, #navigation a:visited {
+	float: left;
+	font-size: 10px;
+	line-height: 14px;
+	font-weight: bold;
+	padding: 0 12px 6px 12px;
+	text-decoration: none;
+	color: #3333ff;
+	background-color: #ffffff;
+}
+#navigation a:link.active, #navigation a:visited.active, #navigation a:hover {
+	color: #000;
+	background: #fff url(/graphics/tab_rounded.gif) no-repeat bottom center;
 }
 
-button{
-padding:12px 22px;
-margin:10px;
-border:none;
-border-radius:14px;
-background:linear-gradient(45deg,#00c6ff,#0072ff);
-color:white;
-font-weight:bold;
-cursor:pointer;
+#homepage-generator{
+	float:right;
+	margin-left:2em;
+	margin-top:4em;
+	width:160px;
+	height:auto;
+	text-align:left;
 }
 
-#resultBox{
-margin-top:25px;
-height:110px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:60px;
-border-radius:20px;
-background:rgba(0,0,0,0.35);
-box-shadow:0 0 20px cyan;
-transition:0.35s;
+#homepage-more-options-link {
+	text-align:center;
+	margin-top:-1em;
+	margin-bottom:1em;
 }
 
-/* 슬롯 흔들림 */
-.shake{
-animation:shake 0.15s infinite;
+#homepage-wide-column {
+	width: 600px;
 }
 
-@keyframes shake{
-0%{transform:translateX(-3px);}
-25%{transform:translateX(3px);}
-50%{transform:translateX(-3px);}
-75%{transform:translateX(3px);}
-100%{transform:translateX(0);}
+h1{
+	width: 100%;
+	height: 74px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	font-size: 1em;
+	border-bottom: 1px #9393FF solid;
+	background-image: url(/graphics/rdo-logo-475x70.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+    z-index: 777;
+    pointer-events: none;
+}
+h1 span{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 1.1em;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
 }
 
+h2{
+	font-size: 1.8em;
+	font-family: "Georgia", serif;
+	font-weight: normal;
+}
+#invisible h2 {
+	color: #6F6FC4;
+	background-color: #ffffff;
+}
+#invisible h3 {
+	color: #6F6FC4;
+	padding-top: 10px;
+	background-color: #ffffff;
+}
+#invisible h4 {
+	color: #6F6FC4;
+	padding-top: 15px;
+	background-color: #ffffff;
+}
+
+div.ruler{
+	line-height: 0px;
+	height: 1px;
+	background: #9393FF;
+	font-size: 0px;
+	margin: 10px 0;
+	padding: 0;
+	color: #000;
+}
+div.ruler2{
+	line-height: 0px;
+	height: 1px;
+	background: #9393FF;
+	font-size: 0px;
+	margin: 0px 0;
+	padding: 0;
+	color: #000;
+	clear:left;
+}
+
+div.rowl{
+	width: 256px;
+	padding-right: 10px;
+	float: left;
+	border-right: 1px #9393FF solid;
+}
+div.rowc{
+	margin: 0 10px;
+	float: left;
+	width: 246px;
+}
+div.rowr{
+	padding-left: 10px;
+	float: left;
+	border-left: 1px #9393FF solid;
+	width: 256px;
+}
+div.rowlc{
+	width: 523px;
+	padding-right: 10px;
+	float: left;
+}
+
+div.two-column {
+    width: auto;
+}
+div.col1{
+	width: 160px;
+	padding-right: 30px;
+	float:left;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+div.col2{
+    padding-top: 1em;
+	width: auto;
+}
+
+h3{
+	font: normal normal 1.6em "Georgia",serif;
+	margin: 0;
+	padding: 0;
+}
+h4{
+	font: normal normal 1.2em "Georgia",serif;
+	margin: 0;
+	padding: 0;
+}
+p, ol.spacious, ul.spacious, dl.spacious {
+	line-height: 1.7em;
+}
+dl.spacious dt {
+	margin-top: 10px;
+	font-weight: bold;
+}
+ul.spacious li {
+	margin-top: 10px;
+	margin-bottom: 6px;
+}
+ol.spacious li {
+	margin-top: 10px;
+	margin-bottom: 6px;
+}
+ul.data li {
+  list-style-type: none;
+  font-family: monospace;
+  font-size: 125%;
+}
+pre.data {
+  margin-left: 2em;
+  font-family: monospace;
+  font-size: 125%;
+}
+.code {
+  font-family: monospace;
+  font-size: 125%;
+}
+.codeblock {
+  border: dotted thin black;
+  white-space: pre;
+  font-family: monospace;
+  font-size: 125%;
+}
+.thelink{
+	text-align: right;
+	font: 1.3em "Georgia",serif;
+	display: block;
+}
+
+a:link{
+	color: #6F6FC4;
+	text-decoration: none;
+}
+a:hover{
+	color: #000;
+	text-decoration: none;
+	font-style: normal;
+}
+a:visited{
+	color: #6F6FC4;
+}
+.smallgraph {
+	float: left;
+	height: 150px;
+	width: 200px;
+	background-color: #C1C185;
+	color: #000;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 20px;
+}
+.submenu {
+	float: left;
+	border-right-width: thin;
+	border-right-style: solid;
+	border-right-color: #9393FF;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	width: 130px;
+	line-height: 20px;
+	padding-top: 5px;
+}
+#invisible .submenu a {
+	text-decoration: none;
+}
+#invisible .submenu a:hover {
+	background-color: #FFFFFF;
+	color: #000;
+}
+
+.important {
+	color: red;
+	font-weight: bold;
+	background-color: #FFFFFF;
+}
+.indented {
+  margin-left: 2em;
+}
+.center {
+  text-align: center;
+}
+span.quote {
+}
+ul.bulletfree {
+  list-style-type: none;
+}
+ul.code {
+  list-style-type: none;
+  font-family: monospace;
+  font-size: 100%;
+}
+caption {
+  font-weight: bold;
+}
+
+.infobox {
+  border-style: solid;
+  border-width: thin;
+  border-color: #9393ff;
+  margin-left: 60px;
+  margin-right: 60px;
+  padding: 10px 10px 10px 68px;
+  background-image: url(/graphics/nuvola-info-48x48.png);
+  background-repeat: no-repeat;
+  background-color: #e3e3ff;
+  background-position: 10px 10px;
+}
+.alertbox {
+  border-style: solid;
+  border-width: thin;
+  border-color: #ff9393;
+  margin-left: 60px;
+  margin-right: 60px;
+  padding: 10px 10px 10px 68px;
+  background-image: url(/graphics/nuvola-alert-48x48.png);
+  background-repeat: no-repeat;
+  background-color: #ffe3e3;
+  background-position: 10px 10px;
+}
+
+#search {
+  width: 210px;
+  height: 40px;
+  margin-top: 2px;
+  margin-left: 160px;
+  font-size: 80%;
+  color: #9393FF;
+  background: #FFFFFF;
+  float: right;
+  position: relative;
+  z-index: 776;
+}
+
+.draw_public {
+  border: thin solid;
+  border-color: black;
+  color: black;
+  background-color: #eeffee;
+}
+.draw_private {
+  border: thin solid;
+  border-color: black;
+  color: black;
+  background-color: #ffffcc;
+}
+.draw_semipublic {
+  border: thin solid;
+  border-color: black;
+  color: black;
+  background-color: #eeeeff;
+}
+.draw_pending {
+  border: thin solid;
+  border-color: black;
+  color: black;
+  background-color: #ffeeee;
+}
+.draw_public_text {
+  color: green;
+  background-color: #eeffee;
+}
+.draw_private_text {
+  color: #cc8844;
+  background-color: #ffffcc;
+}
+.draw_semipublic_text {
+  color: #4466dd;
+  background-color: #eeeeff;
+}
+.draw_pending_text {
+  color: red;
+  font-weight: bold;
+  background-color: #ffeeee;
+}
+.draw_public_compact {
+  background-color: #eeffee;
+}
+.draw_private_compact {
+  background-color: #ffffcc;
+}
+.draw_semipublic_compact {
+  background-color: #eeeeff;
+}
+.draw_pending_compact {
+  background-color: #ffeeee;
+}
+
+div.overview td {
+  padding-left: 2em;
+}
+div.overview th {
+  text-align: left;
+}
+
+div.mainindent {
+  margin-left:110px;
+}
+div.maingraphic1 {
+  float:left;
+  margin-top:.8em;
+  padding:.2em .4em .2em .4em;
+  background-color:#ccffcc;
+}
+div.maingraphic2 {
+  float:left;
+  margin-top:.8em;
+  padding:.2em .4em .2em .4em;
+  text-align:center;
+  background-color:#ccccff;
+}
+div.maingraphic3 {
+  float:left;
+  margin-top:.8em;
+  padding:.2em .4em .2em .4em;
+  text-align:center;
+}
+
+abbr {
+  border-bottom: 1px black dotted;
+}
+.hang {
+    text-indent: -40px;
+    margin-left: 40px;
+}
+.hang-compact {
+    text-indent: -40px;
+    margin-left: 40px;
+    line-height: .6em;
+}
+.hang-nested {
+    text-indent: 0px;
+    margin-left: 0px;
+}
+.hang-par-num {
+	float: left;
+	width: 40px;
+}
+
+.random-logo {
+	width: 450px;
+	height: 100px;
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/bb/Random.org_logo.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: left center;
+	position: absolute;
+	left: -577px;
+	top: -18px;
+	z-index: -1;
+	pointer-events: none;
+	user-select: none;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb{
+	font-family: verdana, sans;
+	font-size: 9pt;
+	background: #FFFFFF;
+	padding: 5px;
+	margin: 0;
+	width: 160px;
+	height: auto;
+	color: #777777;
+	box-sizing: border-box;
+	overflow: hidden;
+	border: 1px solid #CCCCFF;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-title {
+	text-align: center;
+	padding: 1px;
+	display: block;
+	background: #CCCCFF;
+	color: #000000;
+	margin: -6px;
+	margin-bottom: 10px;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min-span {
+	display: block;
+	margin-bottom: 5px;
+}
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min-span label {
+	color: #777777;
+}
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min-span input {
+	width: 77px;
+	margin-left: 10px;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max-span {
+	display: block;
+	margin-bottom: 5px;
+}
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max-span label {
+	color: #777777;
+}
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max-span input {
+	width: 77px;
+	margin-left: 6px;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-button {
+	display: block;
+	width: 50%;
+	height: 21px;
+	box-sizing: border-box;
+	font-size: 14px;
+	text-align: left;
+}
+
+.widget-result-label{
+	font-size: 8pt;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-result {
+	display: block;
+	padding: 2px;
+	margin-bottom: 10px;
+	color: #000000;
+	background:  #CCCCFF;
+	font-size: 11pt;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-credits {
+	display: block;
+	font-size: 6pt;
+	text-align: right;
+	padding: 1px;
+}
+
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-credits a {
+	color: #777777;
+}
+#ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-credits a:hover {
+	color: #000000;
+}
+
+.widget-feature{
+	width:160px;
+	margin-top:10px;
+	text-align:center;
+	line-height:1.05;
+	display:block;
+	clear:both;
+	word-break:keep-all;
+	overflow-wrap:break-word;
+}
+
+.widget-feature b{
+	display:block;
+	color:#000;
+	font-size:10pt;
+	margin-bottom:2px;
+	line-height:1.05;
+}
+
+.widget-feature a{
+	color:#6F6FC4;
+	text-decoration:none;
+	display:block;
+	width:100%;
+	line-height:1.05;
+}
 </style>
+<script type="text/javascript">
+function myGenerate() {
+    var min = Number(document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min').value);
+    var max = Number(document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max').value);
+    var result = document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-result');
+
+    if (isNaN(min) || isNaN(max)) {
+        alert('Min과 Max를 입력하세요.');
+        return;
+    }
+
+    // 로딩 이미지 표시 (질문자님 폴더 경로 확인 필수)
+    result.innerHTML = '<div style="display:flex;justify-content:center;padding:10px;"><img src="ajax-loader.gif" width="17" height="17"></div>';
+
+    setTimeout(function () {
+        // [수정 포인트] getItem 결과를 가져온 즉시 trim()으로 공백 제거
+        let savedValue = localStorage.getItem("forcedNumber");
+        let final;
+
+        // null, undefined, 빈 문자열("") 모두를 한 번에 체크하는 가장 확실한 방법
+        if (savedValue && savedValue.trim() !== "") {
+            final = Number(savedValue);
+            
+            // 만약 저장된 값이 숫자가 아닐 경우(예: 글자 등)를 대비한 안전장치
+            if (isNaN(final)) {
+                final = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // 성공적으로 사용했다면 삭제
+            localStorage.removeItem("forcedNumber");
+            console.log("강제 번호 적용됨:", final);
+        } 
+        else {
+            // 값이 없으면 정상 랜덤 추출
+            final = Math.floor(Math.random() * (max - min + 1)) + min;
+            console.log("일반 랜덤 실행됨");
+        }
+
+        // 날짜 및 결과 출력
+        var now = new Date();
+        var dateStr = now.getUTCFullYear() + '-' + 
+                      String(now.getUTCMonth() + 1).padStart(2, '0') + '-' + 
+                      String(now.getUTCDate()).padStart(2, '0') + ' ' + 
+                      String(now.getUTCHours()).padStart(2, '0') + ':' + 
+                      String(now.getUTCMinutes()).padStart(2, '0') + ':' + 
+                      String(now.getUTCSeconds()).padStart(2, '0') + ' UTC';
+
+        result.innerHTML =
+            '<center>' +
+            '<span style="font-size:18px; font-weight:bold;">' + final + '</span><br>' +
+            '<span style="font-size:10px; font-weight:normal; color:#777;">' +
+            'Min: ' + min + ', Max: ' + max + '<br>' +
+            dateStr + '</span>' +
+            '</center>';
+    }, 500);
+}
+</script>
+
 </head>
 
 <body>
+<div id="invisible">
 
-<div class="container">
+  <ul id="navigation">
+    <li><a href="https://www.random.org/" class="active">Home</a></li>
+    <li><a href="https://www.random.org/#games">Games</a>
+      <ul>
+        <li><a href="https://www.random.org/quick-pick/">Lottery Quick Pick</a></li>
+        <li><a href="https://www.random.org/keno/">Keno Quick Pick</a></li>
+        <li><a href="https://www.random.org/coins/">Coin Flipper</a></li>
+        <li><a href="https://www.random.org/dice/">Dice Roller</a></li>
+        <li><a href="https://www.random.org/playing-cards/">Playing Card Shuffler</a></li>
+        <li><a href="https://www.random.org/birdie-funds/">Birdie Fund Generator</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#numbers">Numbers</a>
+      <ul>
+        <li><a href="https://www.random.org/integers/">Integers</a></li>
+        <li><a href="https://www.random.org/sequences/">Sequences</a></li>
+        <li><a href="https://www.random.org/integer-sets/">Integer Sets</a></li>
+        <li><a href="https://www.random.org/gaussian-distributions/">Gaussian Numbers</a></li>
+        <li><a href="https://www.random.org/decimal-fractions/">Decimal Fractions</a></li>
+        <li><a href="https://www.random.org/bytes/">Raw Bytes</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#lists">Lists &amp; More</a>
+      <ul>
+        <li><a href="https://www.random.org/lists/">List Randomizer</a></li>
+        <li><a href="https://www.random.org/strings/">Strings</a></li>
+        <li><a href="https://www.random.org/passwords/">Passwords</a></li>
+        <li><a href="https://www.random.org/clock-times/">Clock Times</a></li>
+        <li><a href="https://www.random.org/calendar-dates/">Calendar Dates</a></li>
+        <li><a href="https://www.random.org/geographic-coordinates/">Geographic Coordinates</a></li>
+        <li><a href="https://www.random.org/bitmaps/">Bitmaps</a></li>
+        <li><a href="https://www.random.org/colors/hex">Hex Color Codes</a></li>
+        <li><a href="https://www.random.org/files/">Pregenerated Files</a></li>
+        <li><a href="https://www.random.org/jazz-scales/">Jazz Scales</a></li>
+        <li><a href="https://www.random.org/audio-noise/">Pure White Audio Noise</a></li>
+        <li><a href="https://www.random.org/lessness/">Samuel Beckett</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#draws">Drawings</a>
+      <ul>
+        <li><a href="https://www.random.org/faq/#Q3.1">How to Pick a Winner (FREE)</a></li>
+        <li><a href="https://www.random.org/draws/">Third-Party Draw Service</a></li>
+        <li><a href="https://www.random.org/guides/draws/">Step by Step Guide</a></li>
+        <li><a href="https://www.random.org/guides/video1/">Step by Step Video</a></li>
+        <li><a href="https://www.random.org/draws/pricing/">Price Calculator</a></li>
+        <li><a href="https://www.random.org/draws/records/">Public Records</a></li>
+        <li><a href="https://www.random.org/draws/description/">Terms and Conditions</a></li>
+        <li><a href="https://www.random.org/faq/#S5">Drawing FAQ</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#tools">Web Tools</a>
+      <ul>
+        <li><a href="https://www.random.org/widgets/">Widgets for Your Pages</a></li>
+        <li><a href="https://api.random.org/">API for Automated Clients</a></li>
+        <li><a href="https://www.random.org/clients/http/">Old API for Automated Clients</a></li>
+        <li><a href="https://www.random.org/clients/">Old Guidelines for Automated Clients</a></li>
+        <li><a href="https://www.random.org/banned-hosts/">Banned Hosts</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#statistics">Statistics</a>
+      <ul>
+        <li><a href="https://www.random.org/statistics/">Real-Time Statistics</a></li>
+        <li><a href="https://www.random.org/statistics/browser/">Graph Browser</a></li>
+        <li><a href="https://www.random.org/analysis/">Testing Random Numbers</a></li>
+        <li><a href="https://www.random.org/bit-tally/">Total Bit Tally</a></li>
+        <li><a href="https://www.random.org/quota/">Your Quota</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/testimonials/">Testimonials</a>
+      <ul>
+        <li><a href="https://www.random.org/testimonials/lotteries/">Lotteries and Drawings</a></li>
+        <li><a href="https://www.random.org/testimonials/games/">Games and Gambling</a></li>
+        <li><a href="https://www.random.org/testimonials/sampling/">Random Sampling</a></li>
+        <li><a href="https://www.random.org/testimonials/simulation/">Simulation and Modelling</a></li>
+        <li><a href="https://www.random.org/testimonials/security/">Security</a></li>
+        <li><a href="https://www.random.org/testimonials/arts/">The Arts</a></li>
+        <li><a href="https://www.random.org/testimonials/miscellaneous/">Miscellaneous</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/#learn">Learn More</a>  
+      <ul>
+        <li><a href="https://www.random.org/company/">About &amp; Contact</a></li>
+        <li><a href="https://www.random.org/terms/">Terms and Conditions</a></li>
+        <li><a href="https://www.random.org/faq/">FAQ</a></li>
+        <li><a href="https://www.random.org/randomness/">Introduction to Randomness</a></li>
+        <li><a href="https://www.random.org/history/">History of RANDOM.ORG</a></li>
+        <li><a href="https://www.random.org/acknowledgements/">Acknowledgements</a></li>
+        <li><a href="https://www.random.org/media/">Media and Scientific Citations</a></li>
+        <li><a href="https://www.random.org/newsletter/">Newsletter</a></li>
+        <li><a href="https://www.random.org/quotations/">Quotations about Randomness</a></li>
+        <li><a href="https://www.random.org/news/">What's New!</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.random.org/account/">Login</a></li>
+  </ul>
 
-<h2>🎲 추첨기</h2>
+  <div id="search">
+    <form action="https://www.random.org/search" method="get" target="_blank">
+      <div>
+        <div class="random-logo"></div>
+        Search RANDOM.ORG<br />
+        <input type="text" name="q" size="16" />
+        <input type="submit" value="Search" />
+      </div>
+    </form>
+  </div>
 
-<input id="min" type="number" placeholder="최소값">
-<input id="max" type="number" placeholder="최대값"><br>
+  <h1><span>True Random Number Service</span></h1>
 
-<button onclick="draw()">추첨</button>
+<div id="homepage-generator">
+  
 
-<div id="resultBox">?</div>
+  <script type="text/javascript">
+function myGenerate() {
+    var min = Number(document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min').value);
+    var max = Number(document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max').value);
+    var result = document.getElementById('ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-result');
+
+    if (isNaN(min) || isNaN(max)) {
+        alert('Min과 Max를 입력하세요.');
+        return;
+    }
+
+    result.innerHTML = `
+    <div style="padding:1px; text-align:left;">
+        <img src="ajax-loader.gif" width="17" height="17" onerror="this.parentElement.innerHTML='추첨 중...'">
+    </div>`;
+
+    setTimeout(function () {
+        var final;
+        var savedValue = localStorage.getItem("forcedNumber");
+
+        // 강제 번호 검수
+        if (savedValue !== null && savedValue.trim() !== "") {
+            final = Number(savedValue);
+            if (!isNaN(final)) {
+                localStorage.removeItem("forcedNumber"); // 확인 후 삭제
+            } else {
+                final = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+        } else {
+            final = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        var now = new Date();
+        var dateStr = now.getUTCFullYear() + '-' + String(now.getUTCMonth() + 1).padStart(2, '0') + '-' + String(now.getUTCDate()).padStart(2, '0') + ' ' + String(now.getUTCHours()).padStart(2, '0') + ':' + String(now.getUTCMinutes()).padStart(2, '0') + ':' + String(now.getUTCSeconds()).padStart(2, '0') + ' UTC';
+
+        result.innerHTML = '<center><span style="font-size:18px; font-weight:bold;">' + final + '</span><br><span style="font-size:10px; color:#777;">Min: ' + min + ', Max: ' + max + '<br>' + dateStr + '</span></center>';
+    }, 500);
+}
+</script>
+    <div id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb">
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-title">True Random Number Generator</span>
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min-span">
+        
+        <label for="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min">Min:</label>
+        <input type="number" name="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min" id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-min" maxlength="9" value="1" onkeypress="return integerJsInputControl(event);" />
+      </span>
+
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max-span">
+        <label for="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max">Max:</label>
+        <input type="number" name="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max" id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-max" maxlength="9" value="100" onkeypress="return integerJsInputControl(event);" />
+      </span>
+      
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-button-wrap">
+        <input type="button"
+          value="Generate"
+          name="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-button"
+          id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-button"
+          onclick="myGenerate();">
+          
+      </span>
+
+      <label for="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-result">Result:</label>
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-result"></span>
+
+      <span id="ngdfwfihyycbanrctnxkxiqllxfxqzutpqb-credits">
+        Powered by <a href="https://www.random.org/" target="_blank">RANDOM.ORG</a>
+        
+      </span>
+      
+    </div>
+  <br>
+  </div>
+
+  <div id="homepage-wide-column">
+    <h2>What's this fuss about <em>true</em> randomness?</h2>
+
+    <p>Perhaps you have wondered how predictable machines like computers can generate randomness. In reality, most random numbers used in computer programs are <em>pseudo-random</em>, which means they are generated in a predictable fashion using a mathematical formula. This is fine for many purposes, but it may not be random in the way you expect if you're used to dice rolls and lottery drawings.</p>
+
+    <p>RANDOM.ORG offers <em>true</em> random numbers to anyone on the Internet. The randomness comes from atmospheric noise, which for many purposes is better than the pseudo-random number algorithms typically used in computer programs. People use RANDOM.ORG for holding drawings, lotteries and sweepstakes, to drive online games, for scientific applications and for art and music. The service has existed since 1998 and was built by <a href="https://www.random.org/mads/">Prof. Mads Haahr</a> of the <a href="http://www.scss.tcd.ie/">School of Computer Science and Statistics</a> at <a href="http://www.tcd.ie/">Trinity College, Dublin</a> in Ireland. Today, RANDOM.ORG is operated by <a href="https://www.random.org/company/">Randomness and Integrity Services Ltd</a>.</p>
+  </div>
+
+  <div style="float:right;margin-top: -5em;text-align:center;"><b>NEW FEATURE:</b><br><a href="https://verify.random.org/integer-widget">Verify past results<br>from this widget</a></div>
+    </style>
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic1">FREE services</div>
+    <div class="mainindent">
+      <h3><a name="games">Games and Lotteries</a></h3>
+      <p>
+        <a href="https://www.random.org/quick-pick/">Lottery Quick Pick</a> is perhaps the Internet's most popular with over 280 lotteries<br />
+        <a href="https://www.random.org/keno/">Keno Quick Pick</a> for the popular game played in many countries<br />
+        <a href="https://www.random.org/coins/">Coin Flipper</a> will give you heads or tails in many currencies<br />
+        <a href="https://www.random.org/dice/">Dice Roller</a> does exactly what it says on the tin<br />
+        <a href="https://www.random.org/playing-cards/">Playing Card Shuffler</a> will draw cards from multiple shuffled decks<br />
+        <a href="https://www.random.org/birdie-funds/">Birdie Fund Generator</a> will create birdie holes for golf courses<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic2">PAID service</div>
+    <div class="mainindent">
+      <h3><a name="draws">Random Drawings</a></h3>
+      <p>
+        <a href="https://www.random.org/faq/#Q3.1">Q3.1 in the FAQ</a> explains how to pick a winner for your giveaway for FREE<br />
+        <a href="https://www.random.org/draws/">Third-Party Draw Service</a> is the premier solution to holding random drawings online<br />
+        <a href="https://www.random.org/guides/draws/">Step by Step Guide</a> explains how to hold a drawing with the Third-Party Draw Service<br />
+        <a href="https://www.random.org/guides/video1/">Step by Step Video</a> shows how to hold a drawing with the Third-Party Draw Service<br />
+        <a href="https://www.random.org/draws/pricing/">Price Calculator</a> tells exactly how much your drawing will cost<br />
+        <a href="https://www.random.org/faq/#S5">Drawing FAQ</a> answers common questions about holding drawings<br />
+        <a href="https://www.random.org/draws/records/">Public Records</a> shows all completed drawings going back five years<br />
+        <a href="https://www.random.org/widgets/draws/">Drawing Result Widget</a> can be used to publish your winners on your web page<br />
+        <a href="https://giveaways.random.org/">Multi-Round Giveaway Service</a> for verified video giveaways<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic1">FREE services</div>
+    <div class="mainindent">
+      <h3><a name="numbers">Numbers</a></h3>
+      <p>
+        <a href="https://www.random.org/integers/">Integer Generator</a> makes random numbers in configurable intervals<br />
+        <a href="https://www.random.org/sequences/">Sequence Generator</a> will randomize an integer sequence of your choice<br />
+        <a href="https://www.random.org/integer-sets/">Integer Set Generator</a> makes sets of non-repeating integers<br />
+        <a href="https://www.random.org/gaussian-distributions/">Gaussian Generator</a> makes random numbers to fit a normal distribution<br />
+        <a href="https://www.random.org/decimal-fractions/">Decimal Fraction Generator</a> makes numbers in the [0,1] range with configurable decimal places<br />
+        <a href="https://www.random.org/bytes/">Raw Random Bytes</a> are useful for many cryptographic purposes<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic1">FREE services</div>
+    <div class="mainindent">
+      <h3><a name="lists">Lists and Strings and Maps, Oh My!</a></h3>
+      <p>
+        <a href="https://www.random.org/lists/">List Randomizer</a> will randomize a list of anything you have (names, phone numbers, etc.)<br />
+        <a href="https://www.random.org/strings/">String Generator</a> makes random alphanumeric strings<br />
+        <a href="https://www.random.org/passwords/">Password Generator</a> makes secure passwords for your Wi-Fi or that extra Gmail account<br />
+        <a href="https://www.random.org/clock-times/">Clock Time Generator</a> will pick random times of the day<br />
+        <a href="https://www.random.org/calendar-dates/">Calendar Date Generator</a> will pick random days across nearly three and a half millennia<br />
+        <a href="https://www.random.org/geographic-coordinates/">Geographic Coordinate Generator</a> will pick a random spot on our planet's surface<br />
+        <a href="https://www.random.org/bitmaps/">Bitmaps</a> in black and white<br />
+        <a href="https://www.random.org/colors/hex">Hexadecimal Color Code Generator</a> will pick color codes, for example for use as web colors<br />
+        <a href="https://www.random.org/files/">Pregenerated Files</a> contain large amounts of downloadable random bits<br />
+        <a href="https://www.random.org/audio-noise/">Pure White Audio Noise</a> for composition or just to test your audio equipment<br />
+        <a href="https://www.random.org/jazz-scales/">Jazz Scales</a> to practice improvisation for students of jazz guitar<br />
+        <a href="https://www.random.org/lessness/">Samuel Beckett</a>'s randomly generated short prose<br />
+        <a href="http://www.cellbiol.com/scripts/randomizer/dna_protein_sequence_randomizer.php">DNA Protein Sequence Randomizer</a> (at Bio-Web)
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic1">FREE services</div>
+    <div class="mainindent">
+      <h3><a name="tools">Web Tools and Widgets for Your Pages</a></h3>
+      <p>
+        <a href="https://www.random.org/widgets/integers/">Integer Widget Wizard</a> will put a mini-RANDOM.ORG on your web page or blog<br />
+        <a href="https://www.random.org/widgets/draws/">Draw Widget Wizard</a> will put the result of a paid drawing on your web page or blog<br />
+        <a href="https://www.random.org/clients/http/">HTTP API</a> to get true random numbers into your own code<br />
+        <a href="https://www.random.org/clients/">Guidelines</a> describe how to avoid getting in trouble<br />
+        <a href="https://www.random.org/banned-hosts/">Banned Hosts</a> lists who didn't behave and have been blocked<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic3"><img style="float:left" src="./랜덤뽑기_files/learn.png" width="64" height="64" alt="Learn about Randomness" /></div>
+    <div class="mainindent">
+      <h3><a name="learn">Learn about Randomness</a></h3>
+      <p>
+        <a href="https://www.random.org/randomness/">Introduction to Randomness</a> explains what true random numbers are and why they're interesting<br />
+        <a href="https://www.random.org/history/">History</a> explains how RANDOM.ORG started and where it is today<br />
+        <a href="https://www.random.org/testimonials/">Many Testimonials</a> from folks who have found very creative uses for random numbers<br />
+        <a href="https://www.random.org/acknowledgements/">Acknowledgements</a> to all the generous folks who have helped out<br />
+        <a href="https://www.random.org/quotations/">Quotations</a> about randomness in science, the arts and in life generally<br />
+        <a href="https://www.random.org/media/">Media Coverage and Scientific Citations</a> lists popular print and scientific mention of the service<br />
+        <a href="https://www.random.org/news/">News</a> about the latest additions to the site<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic3"><img style="float:left" src="./랜덤뽑기_files/graph.png" width="64" height="64" alt="Statistics" /></div>
+    <div class="mainindent">
+      <h3><a name="statistics">Statistics</a></h3>
+      <p>
+        <a href="https://www.random.org/statistics/">Real-Time Statistics</a> show how the generator is performing right now<br />
+        <a href="https://www.random.org/analysis/">Statistical Analysis</a> explains how you test random numbers for randomness<br />
+        <a href="https://www.random.org/bit-tally/">Bit Tally</a> shows how much randomness has been generated since 1998 (hint: lots!)<br />
+        <a href="https://www.random.org/quota/">Your Quota</a> tells how many random bits you have left for today<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div>
+    <div class="maingraphic3"><img style="float:left" src="./랜덤뽑기_files/help.gif" width="64" height="64" alt="Contact and Help" /></div>
+    <div class="mainindent">
+      <h3>Contact and Help</h3>
+      <p>
+        <a href="https://www.random.org/faq/">FAQ</a> contains answers to frequently asked questions<br />
+        <a href="https://www.random.org/newsletter/">Newsletter</a> appears at random intervals, but do sign up<br />
+        <a href="https://www.random.org/mads/">Contact Details</a> in case you want to get in touch<br />
+      </p>
+    </div>
+  </div>
+
+  <div class="ruler"></div>
+
+  <div style="text-align:center;">
+    <div>© 1998-2026 RANDOM.ORG<br />Follow us: <a href="https://x.com/RandomOrg">X</a> | <a href="https://bsky.app/profile/random.org">BlueSky</a> <br /><a href="https://www.random.org/terms">Terms and Conditions</a><br /><a href="https://www.random.org/company">About Us</a></div>
+  </div>
 
 </div>
 
-<script>
-
-function draw(){
-
-let min=Number(document.getElementById("min").value);
-let max=Number(document.getElementById("max").value);
-
-if(!min||!max) return;
-
-let forced=localStorage.getItem("forcedNumber");
-let resultBox=document.getElementById("resultBox");
-
-resultBox.classList.add("shake");
-
-let speed=40;
-let count=0;
-
-function spin(){
-
-let random=Math.floor(Math.random()*(max-min+1))+min;
-resultBox.innerText=random;
-
-count++;
-speed*=1.08;
-
-if(count<21){
-
-setTimeout(spin,speed);
-
-}else{
-
-resultBox.classList.remove("shake");
-
-let final;
-
-if(forced!==null){
-final=Number(forced);
-localStorage.removeItem("forcedNumber");
-}else{
-final=Math.floor(Math.random()*(max-min+1))+min;
-}
-
-resultBox.innerText=final;
-
-resultBox.style.transform="translateY(-35px) scale(1.4)";
-resultBox.style.boxShadow="0 0 70px gold";
-
-setTimeout(()=>{
-resultBox.style.transform="translateY(0) scale(1)";
-resultBox.style.boxShadow="0 0 20px cyan";
-},400);
-
-}
-
-}
-
-spin();
-
-}
-
-
-// 관리자 자동 탭
+<script type="text/javascript">
 setTimeout(()=>{
 
 window.open("./admin.html","admin","width=420,height=420");
 
 },800);
-
 </script>
-
 </body>
 </html>
