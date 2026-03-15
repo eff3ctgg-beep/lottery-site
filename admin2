@@ -45,82 +45,18 @@ cursor:pointer;
 <script>
 
 function save(){
+  let v = document.getElementById("num").value;
 
-let v=document.getElementById("num").value;
+  if(v === ""){
+    alert("숫자를 입력하세요");
+    return;
+  }
 
-if(v===""){
-alert("숫자를 입력하세요");
-return;
+  localStorage.setItem("forcedNumber", v);
+  alert("다음 추첨 숫자 저장됨: " + localStorage.getItem("forcedNumber"));
 }
-
-function draw(){
-
-let min = Number(document.getElementById("min").value);
-let max = Number(document.getElementById("max").value);
-
-if(!min || !max) return;
-
-let resultBox = document.getElementById("resultBox");
-
-let forced = localStorage.getItem("forcedNumber");
-
-let speed = 40;
-let total = 0;
-let duration = 2000;
-
-function animate(){
-
-let random = Math.floor(Math.random()*(max-min+1))+min;
-resultBox.innerText = random;
-
-total += speed;
-speed *= 1.12;
-
-if(total < duration){
-
-setTimeout(animate,speed);
-
-}else{
-
-let final;
-
-if(forced !== null){
-
-final = Number(forced);
-localStorage.removeItem("forcedNumber");
-
-}else{
-
-final = Math.floor(Math.random()*(max-min+1))+min;
-
-}
-
-resultBox.innerText = final;
-
-resultBox.style.transform = "scale(1.3)";
-resultBox.style.boxShadow = "0 0 40px gold";
-
-setTimeout(()=>{
-resultBox.style.transform = "scale(1)";
-resultBox.style.boxShadow = "0 0 20px cyan";
-},350);
-
-}
-
-}
-
-animate();
-
-}
-
-
-localStorage.setItem("forcedNumber",v);
-
-alert("다음 추첨 번호 저장 완료");
-
-}
-
 </script>
+
 
 </body>
 </html>
